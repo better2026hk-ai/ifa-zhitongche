@@ -1,0 +1,38 @@
+<view class="review-top">
+  <view class="back-btn" bindtap="goBack">
+    <image class="back-ico" src="{{backIcon}}" />
+  </view>
+  <text class="review-title">意见反馈</text>
+</view>
+
+<scroll-view wx:if="{{!submitted}}" class="exam-content" scroll-y="true">
+  <view class="feedback-label" style="text-align:center;">您对 IFA直通车 的整体评分</view>
+  <view class="star-row">
+    <view wx:for="{{stars}}" wx:key="*this" class="star-btn" data-n="{{item}}" bindtap="setRating">
+      <image src="{{item <= rating ? filledStar : emptyStar}}" />
+    </view>
+  </view>
+
+  <view class="feedback-label">您的建议</view>
+  <textarea
+    class="feedback-textarea"
+    maxlength="100"
+    placeholder="欢迎提出您在使用中遇到的问题或建议"
+    value="{{text}}"
+    bindinput="onInput"
+  ></textarea>
+  <view class="feedback-counter">{{text.length}}/100</view>
+
+  <button class="result-btn primary" bindtap="submit">提交反馈</button>
+</scroll-view>
+
+<view wx:else class="result-wrap" style="padding-top:120rpx;">
+  <view class="feedback-thanks-ico">
+    <image src="{{checkIcon}}" />
+  </view>
+  <view class="result-title">感谢您的反馈！</view>
+  <view class="result-desc">我们已经收到您的意见，会认真参考并持续改进 IFA直通车。</view>
+  <view class="result-actions">
+    <button class="result-btn primary" bindtap="goBack">返回</button>
+  </view>
+</view>

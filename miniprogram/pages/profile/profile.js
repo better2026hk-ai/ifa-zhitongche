@@ -9,6 +9,12 @@ const EDIT_ICON = svgIcon('<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 
 const LOGOUT_ICON = svgIcon('<path d="M15 17l5-5-5-5M20 12H9M13 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>', '#E2604B');
 const ARROW_ICON = svgIcon('<path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>', '#9AA0AC');
 
+const ICONS = {
+  user: svgIcon('<circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.6"/><path d="M5 20c1.2-4 4-6 7-6s5.8 2 7 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>', '#0B6B63'),
+  message: svgIcon('<path d="M4 5h16v11H9l-4 4V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>', '#0B6B63'),
+  info: svgIcon('<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8h.01M11 11h1v5h1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>', '#0B6B63')
+};
+
 function formatDate(timestamp) {
   const d = new Date(timestamp);
   const hh = String(d.getHours()).padStart(2, '0');
@@ -27,7 +33,8 @@ Page({
     historyCountLabel: 0,
     editIcon: EDIT_ICON,
     logoutIcon: LOGOUT_ICON,
-    arrowIcon: ARROW_ICON
+    arrowIcon: ARROW_ICON,
+    icons: ICONS
   },
 
   onShow() {
@@ -68,6 +75,18 @@ Page({
 
   editProfile() {
     wx.navigateTo({ url: '/pages/profile-setup/profile-setup?mode=edit' });
+  },
+
+  openAccount() {
+    wx.navigateTo({ url: '/pages/account/account' });
+  },
+
+  openFeedback() {
+    wx.navigateTo({ url: '/pages/feedback/feedback' });
+  },
+
+  openAbout() {
+    wx.navigateTo({ url: '/pages/about/about' });
   },
 
   handleLogout() {

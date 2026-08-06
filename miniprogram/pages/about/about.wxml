@@ -1,0 +1,67 @@
+<view class="review-top">
+  <view class="back-btn" bindtap="goBack">
+    <image class="back-ico" src="{{backIcon}}" />
+  </view>
+  <text class="review-title">关于我们</text>
+</view>
+
+<scroll-view class="exam-content" scroll-y="true">
+  <view class="about-header">
+    <image class="about-logo" src="/images/bhk-brand-logo.png" mode="aspectFit" />
+    <view class="about-brand-name">柏泰香港</view>
+    <view class="about-brand-sub">BETTER HONG KONG</view>
+    <view class="about-title">关于柏泰香港</view>
+    <view class="about-title-en">About Better Hong Kong</view>
+    <view class="about-title-divider"></view>
+  </view>
+
+  <view class="about-badge-grid">
+    <view class="about-badge">
+      <view class="about-badge-ico" style="background:rgba(226,96,75,0.12);"><image src="{{icons.calendar}}" /></view>
+      <view class="about-badge-en">Founded in <text class="accent">2011</text></view>
+      <view class="about-badge-cn">成立於 2011 年</view>
+    </view>
+    <view class="about-badge">
+      <view class="about-badge-ico" style="background:rgba(11,107,99,0.10);"><image src="{{icons.shield}}" /></view>
+      <view class="about-badge-en">Licensed Brokerage</view>
+      <view class="about-badge-cn">持牌保险经纪公司</view>
+    </view>
+    <view class="about-badge">
+      <view class="about-badge-ico" style="background:rgba(226,96,75,0.12);"><image src="{{icons.ia}}" /></view>
+      <view class="about-badge-en">IA Authorized</view>
+      <view class="about-badge-cn">香港保监局授权 (IA)</view>
+    </view>
+    <view class="about-badge">
+      <view class="about-badge-ico" style="background:rgba(11,107,99,0.10);"><image src="{{icons.group}}" /></view>
+      <view class="about-badge-en">New Frontier Member</view>
+      <view class="about-badge-cn">隸屬新风天域集团</view>
+    </view>
+  </view>
+
+  <view class="explain" style="margin-top:0;">
+    <view class="explain-head">
+      <view class="explain-icon"><image src="{{icons.doc}}" /></view>
+      <text class="explain-label">中文介紹</text>
+    </view>
+    <view class="explain-text">
+      柏泰香港（牌照號碼：<text style="color:var(--text-0);font-weight:700;">FB1633</text>）成立於
+      <text style="color:var(--coral);font-weight:700;">2011</text> 年，是香港保險業監管局（IA）授權的持牌保險經紀公司，隸屬<text style="color:var(--text-0);font-weight:700;">新風天域集團</text>。我們依託集團領先的綜合醫療服務生態，結合專業醫療知識、精準風險評估及主動健康管理，深入了解每位客戶的健康狀況與保障需求，為個人、家庭及企業客戶量身定制真正適合的保障方案。
+    </view>
+  </view>
+
+  <view class="explain coral">
+    <view class="explain-head">
+      <view class="explain-icon coral"><image src="{{icons.globe}}" /></view>
+      <text class="explain-label" style="color:var(--coral);">English Introduction</text>
+    </view>
+    <view class="explain-text">
+      Founded in <text style="color:var(--coral);font-weight:700;">2011</text>, Better Hong Kong (<text style="color:var(--text-0);font-weight:700;">FB1633</text>) is a licensed insurance brokerage authorized by the Insurance Authority (IA) of Hong Kong and a member of <text style="color:var(--text-0);font-weight:700;">New Frontier</text>. Leveraging the group's leading integrated healthcare ecosystem, we combine professional medical knowledge, precise risk assessment, and proactive health management to understand each client's health status and protection needs, delivering truly tailored insurance solutions for individuals, families, and corporate clients.
+    </view>
+  </view>
+
+  <view class="about-tagline">
+    <text>專業</text><view class="dot"></view><text>關懷</text><view class="dot"></view><text>信賴</text><view class="dot"></view><text>守護</text>
+  </view>
+
+  <view style="height:40rpx;"></view>
+</scroll-view>

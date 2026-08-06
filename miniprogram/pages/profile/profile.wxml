@@ -59,6 +59,23 @@
     <text class="section-title">设置</text>
   </view>
   <view class="settings-group">
+    <view class="settings-row" bindtap="openAccount">
+      <view class="settings-ico"><image src="{{icons.user}}" /></view>
+      <text class="settings-label">账号管理</text>
+      <image class="settings-arrow" src="{{arrowIcon}}" />
+    </view>
+    <view class="settings-row" bindtap="openFeedback">
+      <view class="settings-ico"><image src="{{icons.message}}" /></view>
+      <text class="settings-label">意见反馈</text>
+      <image class="settings-arrow" src="{{arrowIcon}}" />
+    </view>
+    <view class="settings-row" bindtap="openAbout">
+      <view class="settings-ico"><image src="{{icons.info}}" /></view>
+      <text class="settings-label">关于我们</text>
+      <image class="settings-arrow" src="{{arrowIcon}}" />
+    </view>
+  </view>
+  <view class="settings-group">
     <view class="settings-row" bindtap="handleLogout">
       <view class="settings-ico danger"><image src="{{logoutIcon}}" /></view>
       <text class="settings-label danger">退出登录</text>

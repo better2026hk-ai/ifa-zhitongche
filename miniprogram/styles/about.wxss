@@ -1,0 +1,123 @@
+.about-header {
+  text-align: center;
+  padding: 16rpx 8rpx 44rpx;
+}
+
+.about-logo {
+  width: 88rpx;
+  height: 88rpx;
+  margin: 0 auto 20rpx;
+  display: block;
+}
+
+.about-brand-name {
+  font-weight: 800;
+  font-size: 32rpx;
+  color: var(--green);
+}
+
+.about-brand-sub {
+  font-size: 23rpx;
+  color: var(--text-2);
+  margin-top: 2rpx;
+  letter-spacing: 0.6rpx;
+}
+
+.about-title {
+  font-weight: 800;
+  font-size: 42rpx;
+  color: var(--text-0);
+  margin-top: 36rpx;
+  letter-spacing: -0.4rpx;
+}
+
+.about-title-en {
+  font-size: 25rpx;
+  color: var(--text-2);
+  margin-top: 16rpx;
+}
+
+.about-title-divider {
+  width: 56rpx;
+  height: 6rpx;
+  border-radius: 4rpx;
+  background: var(--coral);
+  margin: 24rpx auto 0;
+}
+
+.about-badge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 36rpx;
+}
+
+.about-badge {
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 32rpx;
+  padding: 32rpx 20rpx;
+  text-align: center;
+  box-shadow: 0 8rpx 28rpx -16rpx rgba(20, 24, 33, 0.08);
+}
+
+.about-badge-ico {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin: 0 auto 18rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-badge-ico image {
+  width: 38rpx;
+  height: 38rpx;
+}
+
+.about-badge-en {
+  font-weight: 700;
+  font-size: 25rpx;
+  color: var(--text-0);
+  line-height: 1.3;
+}
+
+.about-badge-en .accent {
+  color: var(--coral);
+}
+
+.about-badge-cn {
+  font-size: 21rpx;
+  color: var(--text-1);
+  margin-top: 8rpx;
+}
+
+.about-tagline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20rpx;
+  margin: 40rpx 0 8rpx;
+  font-size: 24rpx;
+  color: var(--text-1);
+  letter-spacing: 2rpx;
+}
+
+.about-tagline .dot {
+  width: 6rpx;
+  height: 6rpx;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.explain.coral {
+  margin-top: 24rpx;
+  border-left-color: var(--coral);
+  background: linear-gradient(120deg, rgba(226, 96, 75, 0.06), rgba(226, 96, 75, 0.02));
+}
+
+.explain-icon.coral {
+  background: linear-gradient(140deg, var(--coral), #EF7B62);
+  box-shadow: 0 6rpx 16rpx -6rpx rgba(226, 96, 75, 0.5);
+}

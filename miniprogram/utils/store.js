@@ -13,7 +13,9 @@ const KEYS = {
   PAPER_STATS: 'ifa_paper_stats', // { [paperKey]: { done, correct } }
   ACTIVITY_DATES: 'ifa_activity_dates', // string[] of 'YYYY-MM-DD'
   WRONG_BOOK: 'ifa_wrong_book', // [{ key, paperKey, paperTag, paperName, stem, options, answer, lastPicked, explanation, wrongAt }]
-  EXAM_HISTORY: 'ifa_exam_history' // [{ paperKey, paperTag, paperName, config, questions, answers, total, correct, passed, timestamp }]
+  EXAM_HISTORY: 'ifa_exam_history', // [{ paperKey, paperTag, paperName, config, questions, answers, total, correct, passed, timestamp }]
+  ACCOUNT_ID: 'ifa_account_id', // 真机上换成 wx.login 拿到的 openid
+  FEEDBACK_LIST: 'ifa_feedback' // [{ rating, text, submittedAt }]
 };
 
 const PAPER_KEYS = ['p1', 'p2', 'p3', 'p5', 'mpf'];
@@ -53,8 +55,12 @@ function setProfile(profile) {
   }
 }
 
+function getFirstLoginAt() {
+  return wx.getStorageSync(KEYS.FIRST_LOGIN_AT) || null;
+}
+
 function daysSinceFirstLogin() {
-  const firstLoginAt = wx.getStorageSync(KEYS.FIRST_LOGIN_AT);
+  const firstLoginAt = getFirstLoginAt();
   if (!firstLoginAt) return 1;
   const diffDays = Math.floor((Date.now() - firstLoginAt) / 86400000);
   return Math.max(1, diffDays + 1);
@@ -239,6 +245,29 @@ function computeOverviewStats() {
   return { totalPracticed, avgAcc, streak: computeStreak(), examCount, passCount, wrongCount };
 }
 
+/* ============================================================
+   账号管理 / 意见反馈
+============================================================ */
+
+// 账号 ID 首次登录时生成一次，之后固定不变——真机上应该换成 wx.login()
+// 换来的 openid，现在还没接云开发，先本地生成占位。
+function getOrCreateAccountId() {
+  let id = wx.getStorageSync(KEYS.ACCOUNT_ID);
+  if (!id) {
+    id = 'wxid_' + Math.random().toString(36).slice(2, 10);
+    wx.setStorageSync(KEYS.ACCOUNT_ID, id);
+  }
+  return id;
+}
+
+// 提交后目前只本地留一份记录——真正写入数据库/转发通知需要接一个云函数
+// （技术交接文档 9 节明确写了这是原型里故意没做成真的的地方）。
+function submitFeedback(rating, text) {
+  const list = wx.getStorageSync(KEYS.FEEDBACK_LIST) || [];
+  list.unshift({ rating, text, submittedAt: Date.now() });
+  wx.setStorageSync(KEYS.FEEDBACK_LIST, list);
+}
+
 module.exports = {
   KEYS,
   isLoggedIn,
@@ -246,6 +275,7 @@ module.exports = {
   getProfile,
   hasProfile,
   setProfile,
+  getFirstLoginAt,
   daysSinceFirstLogin,
   computeStreak,
   getPaperStats,
@@ -262,5 +292,7 @@ module.exports = {
   addExamHistory,
   getExamHistoryEntry,
   computeOverviewStats,
+  getOrCreateAccountId,
+  submitFeedback,
   logout
 };

@@ -1,0 +1,37 @@
+<view class="review-top">
+  <view class="back-btn" bindtap="goBack">
+    <image class="back-ico" src="{{backIcon}}" />
+  </view>
+  <text class="review-title">账号管理</text>
+</view>
+<scroll-view class="exam-content" scroll-y="true">
+  <view class="profile-header">
+    <view class="profile-avatar-lg" style="width:96rpx;height:96rpx;font-size:42rpx;">
+      <image wx:if="{{avatarUrl}}" class="profile-avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+      <text wx:else>👤</text>
+    </view>
+    <view class="profile-header-text">
+      <view class="profile-name" style="font-size:32rpx;">{{nickname}}</view>
+      <view class="profile-sub">微信授权登录</view>
+    </view>
+  </view>
+
+  <view class="settings-group">
+    <view class="account-row">
+      <text class="account-label">微信昵称</text>
+      <text class="account-value">{{nickname}}</text>
+    </view>
+    <view class="account-row">
+      <text class="account-label">账号 ID</text>
+      <text class="account-value">{{accountId}}</text>
+    </view>
+    <view class="account-row">
+      <text class="account-label">注册时间</text>
+      <text class="account-value">{{registeredAt}}</text>
+    </view>
+    <view class="account-row">
+      <text class="account-label">绑定手机</text>
+      <text class="account-value">未绑定</text>
+    </view>
+  </view>
+</scroll-view>

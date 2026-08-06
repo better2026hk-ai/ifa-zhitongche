@@ -1,0 +1,45 @@
+/* 头像 + 昵称的头部行——"我的"首屏和账号管理页都用 */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 28rpx;
+  padding: 12rpx 4rpx 44rpx;
+}
+
+.profile-avatar-lg {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--green), var(--green-bright));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+  color: #fff;
+  box-shadow: 0 16rpx 36rpx -16rpx rgba(11, 107, 99, 0.5);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.profile-avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.profile-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-weight: 800;
+  font-size: 36rpx;
+  color: var(--text-0);
+}
+
+.profile-sub {
+  font-size: 24rpx;
+  color: var(--text-1);
+  margin-top: 6rpx;
+}

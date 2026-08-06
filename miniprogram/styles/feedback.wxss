@@ -1,0 +1,60 @@
+.feedback-label {
+  font-weight: 700;
+  font-size: 28rpx;
+  color: var(--text-0);
+  margin-bottom: 20rpx;
+}
+
+.star-row {
+  display: flex;
+  justify-content: center;
+  gap: 20rpx;
+  margin: 52rpx 0 60rpx;
+}
+
+.star-btn {
+  width: 76rpx;
+  height: 76rpx;
+}
+
+.star-btn:active {
+  transform: scale(0.9);
+}
+
+.feedback-textarea {
+  width: 100%;
+  min-height: 220rpx;
+  border-radius: 32rpx;
+  border: 1rpx solid var(--border);
+  background: var(--surface);
+  padding: 28rpx;
+  font-size: 27rpx;
+  color: var(--text-0);
+  box-shadow: 0 8rpx 28rpx -16rpx rgba(20, 24, 33, 0.08);
+  box-sizing: border-box;
+}
+
+.feedback-counter {
+  text-align: right;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 22rpx;
+  color: var(--text-2);
+  margin: 12rpx 4rpx 44rpx;
+}
+
+.feedback-thanks-ico {
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--green), var(--green-bright));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 36rpx;
+  box-shadow: 0 20rpx 44rpx -20rpx rgba(11, 107, 99, 0.5);
+}
+
+.feedback-thanks-ico image {
+  width: 60rpx;
+  height: 60rpx;
+}
