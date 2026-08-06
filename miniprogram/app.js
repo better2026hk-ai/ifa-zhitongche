@@ -1,3 +1,5 @@
+const fontData = require('./fonts/font-data.js');
+
 App({
   globalData: {
     // Filled right after wx.login() succeeds, before the profile-setup screen
@@ -14,62 +16,32 @@ App({
   // 设计规范：中英文标题用 Plus Jakarta Sans，数字类信息（题数/百分比/倒计时）
   // 用 JetBrains Mono——这两个都不是系统自带字体，写了 font-family 名字但不用
   // wx.loadFontFace() 注册的话会静默 fallback 到系统字体，跟设计稿字形差异很大
-  // （尤其是标题里混排的英文/数字，比如"Paper Ⅱ""15%"）。只打了实际用到的字重。
+  // （尤其是标题里混排的英文/数字，比如"Paper Ⅱ""15%"）。
   //
-  // wx.loadFontFace 的 source 不能直接传包内路径（比如 "/fonts/x.ttf"）——
-  // 它会被当成需要下载的网络地址，报 "createDownloadTask:fail invalid url"。
-  // 本地字体必须先落到 wx.env.USER_DATA_PATH 这个真实的本地路径下才能用。
-  // fs.copyFile 的 srcPath 传包内路径会报 "permission denied"（包内资源不是
-  // 普通文件系统路径，不能直接当拷贝源），所以改成 readFile 读出二进制内容
-  // 再 writeFile 写到 USER_DATA_PATH——读包内资源官方是支持的，只是不能"拷贝"。
+  // wx.loadFontFace 的 source 传包内路径（"/fonts/x.ttf"）会被当成要下载的网络
+  // 地址报错；改用文件系统 API 把包内文件拷到本地也不行——包内资源根本不是
+  // FileSystemManager 能打开的路径，copyFile/readFile 都报 permission denied。
+  // 唯一在这几种方式都失败后还能用的本地方案：直接把字体内容转成 base64
+  // data URI 内嵌传给 source，不依赖任何文件路径解析。
   loadCustomFonts() {
     const fonts = [
-      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-Regular.ttf', weight: '400' },
-      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-SemiBold.ttf', weight: '600' },
-      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-Bold.ttf', weight: '700' },
-      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-ExtraBold.ttf', weight: '800' },
-      { family: 'JetBrains Mono', file: 'JetBrainsMono-Regular.ttf', weight: '400' },
-      { family: 'JetBrains Mono', file: 'JetBrainsMono-Bold.ttf', weight: '700' }
+      { family: 'Plus Jakarta Sans', data: fontData.pjsRegular, weight: '400' },
+      { family: 'Plus Jakarta Sans', data: fontData.pjsSemiBold, weight: '600' },
+      { family: 'Plus Jakarta Sans', data: fontData.pjsBold, weight: '700' },
+      { family: 'Plus Jakarta Sans', data: fontData.pjsExtraBold, weight: '800' },
+      { family: 'JetBrains Mono', data: fontData.monoRegular, weight: '400' },
+      { family: 'JetBrains Mono', data: fontData.monoBold, weight: '700' }
     ];
-    fonts.forEach(({ family, file, weight }) => this.loadLocalFont(family, file, weight));
-  },
-
-  loadLocalFont(family, file, weight) {
-    const fs = wx.getFileSystemManager();
-    const destPath = `${wx.env.USER_DATA_PATH}/${file}`;
-    const register = () => {
+    fonts.forEach(({ family, data, weight }) => {
       wx.loadFontFace({
         family,
-        source: `url("${destPath}")`,
+        source: `url("${data}")`,
         desc: { weight },
         scopes: ['webview', 'native'],
         fail(err) {
           console.warn(`${family} (${weight}) 加载失败，将回退到系统字体`, err);
         }
       });
-    };
-
-    fs.access({
-      path: destPath,
-      success: register,
-      fail: () => {
-        fs.readFile({
-          filePath: `/fonts/${file}`,
-          success: (res) => {
-            fs.writeFile({
-              filePath: destPath,
-              data: res.data,
-              success: register,
-              fail(err) {
-                console.warn(`写入字体文件失败: ${file}`, err);
-              }
-            });
-          },
-          fail(err) {
-            console.warn(`读取字体文件失败: ${file}`, err);
-          }
-        });
-      }
     });
   }
 });
