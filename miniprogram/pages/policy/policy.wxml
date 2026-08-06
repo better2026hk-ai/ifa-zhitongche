@@ -1,0 +1,23 @@
+<view class="review-top">
+  <view class="back-btn" bindtap="goBack">
+    <image class="back-ico" src="{{backIcon}}" />
+  </view>
+  <text class="review-title">{{doc.title}}</text>
+</view>
+<scroll-view wx:if="{{doc}}" class="exam-content" scroll-y="true">
+  <view class="policy-updated">{{doc.updated}}</view>
+  <view class="policy-p intro">{{doc.intro}}</view>
+  <block wx:for="{{doc.sections}}" wx:key="h">
+    <view class="policy-h2">{{item.h}}</view>
+    <rich-text
+      wx:for="{{item.p}}"
+      wx:for-item="para"
+      wx:for-index="pIndex"
+      wx:key="pIndex"
+      class="policy-p"
+      nodes="{{para}}"
+    ></rich-text>
+  </block>
+  <view class="policy-footnote">{{doc.footnote}}</view>
+  <view style="height:80rpx;"></view>
+</scroll-view>

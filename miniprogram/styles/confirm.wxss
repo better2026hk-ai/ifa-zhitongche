@@ -1,0 +1,75 @@
+.confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 24, 33, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx;
+}
+
+.confirm-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.confirm-box {
+  background: #fff;
+  border-radius: 44rpx;
+  padding: 48rpx 44rpx;
+  width: 100%;
+  box-shadow: 0 48rpx 120rpx -32rpx rgba(20, 24, 33, 0.35);
+  transform: scale(0.92);
+  transition: transform 0.25s ease;
+}
+
+.confirm-overlay.show .confirm-box {
+  transform: scale(1);
+}
+
+.confirm-title {
+  font-weight: 700;
+  font-size: 32rpx;
+  margin-bottom: 16rpx;
+  color: var(--text-0);
+}
+
+.confirm-text {
+  font-size: 26rpx;
+  color: var(--text-1);
+  line-height: 1.6;
+  margin-bottom: 40rpx;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.confirm-btn {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx;
+  border-radius: 26rpx;
+  font-weight: 700;
+  font-size: 27rpx;
+}
+
+.confirm-btn.ghost {
+  background: var(--surface-2);
+  color: var(--text-1);
+  border: 1rpx solid var(--border);
+}
+
+.confirm-btn.danger {
+  background: linear-gradient(120deg, var(--coral), #EF7B62);
+  color: #fff;
+  box-shadow: 0 16rpx 36rpx -16rpx rgba(226, 96, 75, 0.5);
+}

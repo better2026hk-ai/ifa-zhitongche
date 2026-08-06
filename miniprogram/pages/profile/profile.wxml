@@ -1,0 +1,46 @@
+<scroll-view class="home-scroll" scroll-y="true">
+  <view class="profile-header">
+    <view class="profile-avatar-lg">
+      <image wx:if="{{avatarUrl}}" class="profile-avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+      <text wx:else>👤</text>
+    </view>
+    <view class="profile-header-text">
+      <view class="profile-name">{{nickname}}</view>
+      <view class="profile-sub">备考第 {{days}} 天 · IFA直通车</view>
+    </view>
+    <view class="profile-edit" bindtap="editProfile">
+      <image src="{{editIcon}}" />
+    </view>
+  </view>
+
+  <view class="section-head" style="margin-top:0;">
+    <text class="section-title">学习总览</text>
+  </view>
+  <view class="empty-note">
+    <text class="placeholder-desc">练习记录、模拟考试统计、错题本等功能正在开发中，下一步实现后这里会显示真实数据。</text>
+  </view>
+
+  <view class="section-head">
+    <text class="section-title">设置</text>
+  </view>
+  <view class="settings-group">
+    <view class="settings-row" bindtap="handleLogout">
+      <view class="settings-ico danger"><image src="{{logoutIcon}}" /></view>
+      <text class="settings-label danger">退出登录</text>
+      <image class="settings-arrow" src="{{arrowIcon}}" />
+    </view>
+  </view>
+
+  <view style="height:200rpx;"></view>
+</scroll-view>
+
+<view class="confirm-overlay {{confirmVisible ? 'show' : ''}}">
+  <view class="confirm-box">
+    <view class="confirm-title">退出登录</view>
+    <view class="confirm-text">确定要退出登录吗？退出后需要重新完成微信授权才能继续使用。</view>
+    <view class="confirm-actions">
+      <button class="confirm-btn danger" bindtap="confirmLogout">退出登录</button>
+      <button class="confirm-btn ghost" bindtap="cancelLogout">取消</button>
+    </view>
+  </view>
+</view>

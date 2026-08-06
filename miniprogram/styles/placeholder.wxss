@@ -1,0 +1,38 @@
+.placeholder-wrap {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28rpx;
+  padding: 0 80rpx 200rpx;
+  text-align: center;
+}
+
+.placeholder-ico {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 36rpx;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-ico image {
+  width: 52rpx;
+  height: 52rpx;
+}
+
+.placeholder-title {
+  font-weight: 700;
+  font-size: 31rpx;
+  color: var(--text-0);
+}
+
+.placeholder-desc {
+  font-size: 25rpx;
+  color: var(--text-1);
+  line-height: 1.6;
+}

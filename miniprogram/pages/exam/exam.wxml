@@ -1,0 +1,5 @@
+<view class="placeholder-wrap">
+  <view class="placeholder-ico"><image src="{{icon}}" /></view>
+  <view class="placeholder-title">模拟考试</view>
+  <view class="placeholder-desc">限时限量、交卷出分的模拟考试功能正在开发中，下一步实现。</view>
+</view>

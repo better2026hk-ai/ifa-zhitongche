@@ -1,0 +1,134 @@
+/* 底部弹出面板，原型里"切换题库"/"章节切换"/"题号导航"等都是这个模式 */
+
+.sheet-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 24, 33, 0.32);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 900;
+}
+
+.sheet-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFFFFF;
+  border-top: 1rpx solid var(--border-strong);
+  border-radius: 56rpx 56rpx 0 0;
+  padding: 20rpx 40rpx calc(48rpx + 20rpx + env(safe-area-inset-bottom));
+  transform: translateY(105%);
+  transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.25, 1);
+  z-index: 901;
+  box-shadow: 0 -40rpx 100rpx -20rpx rgba(20, 24, 33, 0.16);
+  max-height: 78vh;
+}
+
+.sheet.show {
+  transform: translateY(0);
+}
+
+.sheet-handle {
+  width: 72rpx;
+  height: 10rpx;
+  border-radius: 6rpx;
+  background: rgba(20, 24, 33, 0.15);
+  margin: 12rpx auto 24rpx;
+}
+
+.sheet-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8rpx 28rpx;
+}
+
+.sheet-title {
+  font-weight: 700;
+  font-size: 31rpx;
+  letter-spacing: -0.3rpx;
+  color: var(--text-0);
+}
+
+.sheet-list {
+  max-height: 56vh;
+  overflow-y: auto;
+}
+
+.sheet-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 16rpx;
+  border-bottom: 1rpx solid rgba(20, 24, 33, 0.06);
+}
+
+.sheet-item:last-child {
+  border-bottom: none;
+}
+
+.sheet-item-left {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.sheet-badge {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 22rpx;
+  font-weight: 700;
+  color: var(--text-1);
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  min-width: 112rpx;
+  text-align: center;
+}
+
+.sheet-item.selected .sheet-badge {
+  color: #fff;
+  background: linear-gradient(140deg, var(--green), var(--green-bright));
+  border-color: transparent;
+}
+
+.sheet-item-title {
+  font-weight: 700;
+  font-size: 29rpx;
+  letter-spacing: -0.2rpx;
+  color: var(--text-0);
+}
+
+.sheet-item-sub {
+  font-size: 23rpx;
+  color: var(--text-1);
+  margin-top: 4rpx;
+}
+
+.sheet-check {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.sheet-cancel {
+  margin-top: 12rpx;
+  width: 100%;
+  text-align: center;
+  padding: 28rpx;
+  font-weight: 650;
+  font-size: 29rpx;
+  color: var(--text-1);
+  background: var(--surface-2);
+  border-radius: 32rpx;
+  border: 1rpx solid var(--border);
+}

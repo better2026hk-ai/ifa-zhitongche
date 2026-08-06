@@ -1,0 +1,12 @@
+<view class="tabbar">
+  <view
+    wx:for="{{tabs}}"
+    wx:key="key"
+    class="tab {{selected === index ? 'active' : ''}}"
+    data-index="{{index}}"
+    bindtap="onTap"
+  >
+    <image class="tab-ico" src="{{selected === index ? item.iconActive : item.iconInactive}}" />
+    <text class="tab-label">{{item.label}}</text>
+  </view>
+</view>

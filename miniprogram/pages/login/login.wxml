@@ -1,0 +1,17 @@
+<view class="login-wrap">
+  <image class="login-mark" src="/images/app-icon.png" mode="aspectFill" />
+  <view class="login-title">欢迎使用 IFA直通车</view>
+  <view class="login-desc">香港保险中介人资格考试题库与模拟考试，登录后即可同步你的练习进度与错题记录。</view>
+
+  <button class="wx-login-btn" bindtap="handleLogin" loading="{{loggingIn}}">
+    <image class="wx-login-ico" src="{{wxIcon}}" />
+    <text>微信授权登录</text>
+  </button>
+
+  <view class="login-agreement">
+    登录即代表同意
+    <text class="link" bindtap="viewTerms">《用户协议》</text>
+    与
+    <text class="link" bindtap="viewPrivacy">《隐私政策》</text>
+  </view>
+</view>

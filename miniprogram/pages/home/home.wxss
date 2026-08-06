@@ -1,0 +1,334 @@
+@import "../../styles/sheet.wxss";
+
+.home-scroll {
+  height: 100vh;
+  padding: 12rpx 40rpx 0;
+  box-sizing: border-box;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12rpx 4rpx 36rpx;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+
+.brand-mark {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 16rpx;
+  box-shadow: 0 8rpx 20rpx -6rpx rgba(20, 24, 33, 0.35);
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 34rpx;
+  letter-spacing: -0.2rpx;
+  color: var(--text-0);
+}
+
+.avatar {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.greeting {
+  font-weight: 700;
+  font-size: 44rpx;
+  letter-spacing: -0.4rpx;
+  margin: 4rpx 0 36rpx;
+  color: var(--text-0);
+}
+
+.greeting-sub {
+  display: block;
+  color: var(--text-1);
+  font-weight: 500;
+  font-size: 28rpx;
+  margin-top: 8rpx;
+}
+
+.selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 36rpx;
+  padding: 28rpx 32rpx;
+  box-shadow: 0 8rpx 28rpx -14rpx rgba(20, 24, 33, 0.1);
+}
+
+.selector-left {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+
+.selector-tag {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 22rpx;
+  font-weight: 700;
+  color: var(--green);
+  background: rgba(11, 107, 99, 0.09);
+  border: 1rpx solid rgba(11, 107, 99, 0.22);
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+}
+
+.selector-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.selector-title {
+  font-weight: 700;
+  font-size: 30rpx;
+  letter-spacing: -0.2rpx;
+  color: var(--text-0);
+}
+
+.selector-sub {
+  font-size: 24rpx;
+  color: var(--text-1);
+}
+
+.chevron {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.dashboard {
+  margin-top: 36rpx;
+  background-image: linear-gradient(160deg, rgba(11, 107, 99, 0.06), rgba(23, 201, 163, 0.02)), url('/images/home-dashboard-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  border: 1rpx solid var(--border);
+  border-radius: 52rpx;
+  padding: 52rpx 44rpx 44rpx;
+  box-shadow: 0 20rpx 60rpx -24rpx rgba(20, 24, 33, 0.14), 0 8rpx 28rpx -16rpx rgba(11, 107, 99, 0.12);
+}
+
+.dash-row {
+  display: flex;
+  align-items: center;
+  gap: 44rpx;
+}
+
+.ring-outer {
+  width: 264rpx;
+  height: 264rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4rpx 12rpx rgba(11, 107, 99, 0.35));
+}
+
+.ring-inner {
+  width: 216rpx;
+  height: 216rpx;
+  border-radius: 50%;
+  background: #FBFCFEEE;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-pct {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 54rpx;
+  font-weight: 700;
+  letter-spacing: -1rpx;
+  color: var(--text-0);
+}
+
+.ring-label {
+  font-size: 22rpx;
+  color: var(--text-1);
+  margin-top: 4rpx;
+}
+
+.dash-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  min-width: 0;
+}
+
+.dash-info-title {
+  font-weight: 700;
+  font-size: 30rpx;
+  letter-spacing: -0.2rpx;
+  color: var(--text-0);
+}
+
+.dash-info-desc {
+  font-size: 25rpx;
+  color: var(--text-1);
+  line-height: 1.5;
+}
+
+.cta {
+  margin-top: 4rpx;
+  display: inline-flex;
+  align-items: center;
+  gap: 12rpx;
+  background: linear-gradient(120deg, var(--green), var(--green-bright));
+  color: #fff;
+  font-weight: 700;
+  font-size: 27rpx;
+  padding: 20rpx 32rpx;
+  border-radius: 28rpx;
+  width: fit-content;
+  box-shadow: 0 20rpx 44rpx -14rpx rgba(11, 107, 99, 0.55);
+}
+
+.cta:active {
+  opacity: 0.9;
+}
+
+.cta-arrow {
+  width: 28rpx;
+  height: 28rpx;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 52rpx 4rpx 24rpx;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 33rpx;
+  letter-spacing: -0.3rpx;
+  color: var(--text-0);
+}
+
+.section-count {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 24rpx;
+  color: var(--text-2);
+}
+
+.paper-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.paper-card {
+  display: flex;
+  align-items: center;
+  gap: 28rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 36rpx;
+  padding: 28rpx;
+  box-shadow: 0 8rpx 28rpx -16rpx rgba(20, 24, 33, 0.08);
+}
+
+.paper-card.active {
+  border-color: rgba(11, 107, 99, 0.35);
+  background: linear-gradient(120deg, rgba(11, 107, 99, 0.06), rgba(207, 234, 230, 0.03));
+}
+
+.paper-icon {
+  height: 84rpx;
+  min-width: 168rpx;
+  padding: 0 24rpx;
+  border-radius: 24rpx;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-weight: 700;
+  font-size: 25rpx;
+  letter-spacing: -0.4rpx;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.paper-card.active .paper-icon {
+  background: linear-gradient(140deg, var(--green), var(--green-bright));
+  box-shadow: 0 12rpx 28rpx -12rpx rgba(11, 107, 99, 0.5);
+  color: #fff;
+  border-color: transparent;
+}
+
+.paper-mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.paper-title {
+  font-weight: 700;
+  font-size: 29rpx;
+  letter-spacing: -0.2rpx;
+  color: var(--text-0);
+}
+
+.paper-sub {
+  font-size: 23rpx;
+  color: var(--text-1);
+  margin-top: 6rpx;
+}
+
+.paper-progress {
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: rgba(20, 24, 33, 0.07);
+  margin-top: 16rpx;
+  overflow: hidden;
+}
+
+.paper-progress-fill {
+  height: 100%;
+  border-radius: 4rpx;
+  background: linear-gradient(90deg, var(--green), var(--green-bright));
+}
+
+.paper-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.paper-frac {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 25rpx;
+  color: var(--text-1);
+}
+
+.paper-arrow {
+  color: var(--text-2);
+  font-size: 32rpx;
+  margin-top: 12rpx;
+}

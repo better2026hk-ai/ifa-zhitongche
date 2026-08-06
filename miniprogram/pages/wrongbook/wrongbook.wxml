@@ -1,0 +1,5 @@
+<view class="placeholder-wrap">
+  <view class="placeholder-ico"><image src="{{icon}}" /></view>
+  <view class="placeholder-title">错题本</view>
+  <view class="placeholder-desc">自动收录、可重新组卷测验的错题本功能正在开发中，下一步实现。</view>
+</view>

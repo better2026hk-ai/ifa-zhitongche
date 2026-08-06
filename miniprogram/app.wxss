@@ -1,0 +1,49 @@
+page {
+  --bg-0: #F4F6F9;
+  --bg-1: #FBFCFE;
+  --surface: #FFFFFF;
+  --surface-2: #F1F3F7;
+  --border: rgba(20, 24, 33, 0.07);
+  --border-strong: rgba(20, 24, 33, 0.12);
+  --text-0: #14161A;
+  --text-1: #5B6472;
+  --text-2: #9AA0AC;
+  --green: #0B6B63;
+  --green-bright: #17C9A3;
+  --green-soft: #2E9C8E;
+  --mint: #CFEAE6;
+  --up: #178F76;
+  --coral: #E2604B;
+  --coral-soft: #FCBCB3;
+  --coral-tint: #FDEDE9;
+  --amber: #C98A1F;
+  --amber-tint: #FBF1E1;
+
+  height: 100%;
+  background: radial-gradient(120% 60% at 50% -12%, rgba(23, 201, 163, 0.13), transparent 60%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 55%, #EEF1F5 100%);
+  color: var(--text-0);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
+  box-sizing: border-box;
+}
+
+view, text, button, input, image, scroll-view {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  line-height: normal;
+  background: none;
+  border: none;
+}
+
+button::after {
+  border: none;
+}
+
+.mono {
+  font-family: "JetBrains Mono", "SF Mono", "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+}

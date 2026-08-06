@@ -1,0 +1,97 @@
+/* 登录 / 完善资料 两个页面共用的样式，对应原型里的 .login-wrap 系列类名 */
+
+.login-wrap {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 64rpx;
+  text-align: center;
+}
+
+.login-mark {
+  width: 168rpx;
+  height: 168rpx;
+  border-radius: 44rpx;
+  box-shadow: 0 28rpx 60rpx -24rpx rgba(11, 107, 99, 0.4);
+  margin-bottom: 40rpx;
+}
+
+.login-title {
+  font-weight: 800;
+  font-size: 44rpx;
+  letter-spacing: -0.6rpx;
+  color: var(--text-0);
+  margin-bottom: 16rpx;
+}
+
+.login-desc {
+  font-size: 26rpx;
+  color: var(--text-1);
+  line-height: 1.6;
+  margin-bottom: 72rpx;
+  max-width: 520rpx;
+}
+
+.wx-login-btn {
+  width: 100%;
+  max-width: 560rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18rpx;
+  padding: 30rpx;
+  border-radius: 32rpx;
+  background: linear-gradient(120deg, #07C160, #05A64F);
+  color: #fff;
+  font-weight: 700;
+  font-size: 30rpx;
+  box-shadow: 0 28rpx 52rpx -24rpx rgba(7, 193, 96, 0.55);
+}
+
+.wx-login-btn:active {
+  opacity: 0.85;
+}
+
+.wx-login-ico {
+  width: 38rpx;
+  height: 38rpx;
+}
+
+.login-agreement {
+  font-size: 22rpx;
+  color: var(--text-2);
+  line-height: 1.6;
+  margin-top: 36rpx;
+  max-width: 520rpx;
+}
+
+.login-agreement .link {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.top-back-row {
+  align-self: flex-start;
+  width: 100%;
+  max-width: 560rpx;
+  margin-bottom: 8rpx;
+}
+
+.back-btn {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 16rpx -8rpx rgba(20, 24, 33, 0.08);
+}
+
+.back-ico {
+  width: 32rpx;
+  height: 32rpx;
+}

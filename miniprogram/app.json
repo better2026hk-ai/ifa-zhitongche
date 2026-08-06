@@ -1,0 +1,30 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/profile-setup/profile-setup",
+    "pages/home/home",
+    "pages/exam/exam",
+    "pages/wrongbook/wrongbook",
+    "pages/profile/profile",
+    "pages/policy/policy"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#F4F6F9",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#9AA0AC",
+    "selectedColor": "#0B6B63",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      { "pagePath": "pages/home/home", "text": "首页" },
+      { "pagePath": "pages/exam/exam", "text": "模拟考试" },
+      { "pagePath": "pages/wrongbook/wrongbook", "text": "错题本" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

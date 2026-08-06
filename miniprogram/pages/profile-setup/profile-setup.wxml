@@ -1,0 +1,30 @@
+<view class="login-wrap">
+  <view class="top-back-row" wx:if="{{isEdit}}">
+    <view class="back-btn" bindtap="handleBack">
+      <image class="back-ico" src="{{backIcon}}" />
+    </view>
+  </view>
+
+  <view class="login-title" style="margin-bottom:8rpx;">{{isEdit ? '编辑资料' : '完善你的资料'}}</view>
+  <view class="login-desc" style="margin-bottom:52rpx;">{{isEdit ? '修改头像与昵称' : '选择头像、确认昵称后即可开始使用'}}</view>
+
+  <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+    <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+    <text wx:else class="avatar-placeholder">＋</text>
+  </button>
+  <view class="avatar-hint">点击选择头像</view>
+
+  <view class="field">
+    <view class="field-label">微信昵称</view>
+    <input
+      class="nickname-input"
+      type="nickname"
+      placeholder="请输入昵称"
+      value="{{nickname}}"
+      bindinput="onNicknameInput"
+      bindblur="onNicknameBlur"
+    />
+  </view>
+
+  <button class="wx-login-btn confirm-btn" bindtap="handleConfirm">{{isEdit ? '保存' : '完成'}}</button>
+</view>
