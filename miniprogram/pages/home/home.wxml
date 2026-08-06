@@ -40,7 +40,7 @@
         <view class="dash-info-title">{{current.tag}} · {{current.title}}</view>
         <view class="dash-info-desc">{{current.desc}}</view>
         <button class="cta" bindtap="onContinue">
-          继续练习
+          <text class="cta-label">继续练习</text>
           <image class="cta-arrow" src="{{arrowIcon}}" />
         </button>
       </view>

@@ -18,12 +18,13 @@ page {
   --coral-tint: #FDEDE9;
   --amber: #C98A1F;
   --amber-tint: #FBF1E1;
+  --font-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
 
   height: 100%;
   background: radial-gradient(120% 60% at 50% -12%, rgba(23, 201, 163, 0.13), transparent 60%),
     linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 55%, #EEF1F5 100%);
   color: var(--text-0);
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
+  font-family: var(--font-display);
   box-sizing: border-box;
 }
 

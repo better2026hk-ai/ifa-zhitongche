@@ -201,6 +201,7 @@
   font-size: 30rpx;
   letter-spacing: -0.2rpx;
   color: var(--text-0);
+  word-break: break-word;
 }
 
 .dash-info-desc {
@@ -213,6 +214,7 @@
   margin-top: 4rpx;
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   gap: 12rpx;
   background: linear-gradient(120deg, var(--green), var(--green-bright));
   color: #fff;
@@ -220,8 +222,16 @@
   font-size: 27rpx;
   padding: 20rpx 32rpx;
   border-radius: 28rpx;
-  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
   box-shadow: 0 20rpx 44rpx -14rpx rgba(11, 107, 99, 0.55);
+}
+
+.cta-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .cta:active {

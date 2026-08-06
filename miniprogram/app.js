@@ -8,30 +8,32 @@ App({
 
   onLaunch() {
     // TODO: once 云开发 is provisioned, call wx.cloud.init() here.
-    this.loadNumericFont();
+    this.loadCustomFonts();
   },
 
-  // 设计规范里数字类信息（题数/百分比/倒计时）统一用 JetBrains Mono——这不是系统
-  // 自带字体，不注册的话会静默 fallback 到系统等宽字体，跟设计稿对不上。
-  // 只打了 Regular/Bold 两个字重，跟项目里实际用到的 font-weight 一致。
-  loadNumericFont() {
-    wx.loadFontFace({
-      family: 'JetBrains Mono',
-      source: 'url("/fonts/JetBrainsMono-Regular.ttf")',
-      desc: { weight: '400' },
-      scopes: ['webview', 'native'],
-      fail(err) {
-        console.warn('JetBrains Mono Regular 加载失败，将回退到系统等宽字体', err);
-      }
-    });
-    wx.loadFontFace({
-      family: 'JetBrains Mono',
-      source: 'url("/fonts/JetBrainsMono-Bold.ttf")',
-      desc: { weight: '700' },
-      scopes: ['webview', 'native'],
-      fail(err) {
-        console.warn('JetBrains Mono Bold 加载失败，将回退到系统等宽字体', err);
-      }
+  // 设计规范：中英文标题用 Plus Jakarta Sans，数字类信息（题数/百分比/倒计时）
+  // 用 JetBrains Mono——这两个都不是系统自带字体，写了 font-family 名字但不用
+  // wx.loadFontFace() 注册的话会静默 fallback 到系统字体，跟设计稿字形差异很大
+  // （尤其是标题里混排的英文/数字，比如"Paper Ⅱ""15%"）。只打了实际用到的字重。
+  loadCustomFonts() {
+    const fonts = [
+      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-Regular.ttf', weight: '400' },
+      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-SemiBold.ttf', weight: '600' },
+      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-Bold.ttf', weight: '700' },
+      { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-ExtraBold.ttf', weight: '800' },
+      { family: 'JetBrains Mono', file: 'JetBrainsMono-Regular.ttf', weight: '400' },
+      { family: 'JetBrains Mono', file: 'JetBrainsMono-Bold.ttf', weight: '700' }
+    ];
+    fonts.forEach(({ family, file, weight }) => {
+      wx.loadFontFace({
+        family,
+        source: `url("/fonts/${file}")`,
+        desc: { weight },
+        scopes: ['webview', 'native'],
+        fail(err) {
+          console.warn(`${family} (${weight}) 加载失败，将回退到系统字体`, err);
+        }
+      });
     });
   }
 });
