@@ -119,17 +119,39 @@
 }
 
 .dashboard {
+  position: relative;
   margin-top: 36rpx;
-  background-image: linear-gradient(160deg, rgba(11, 107, 99, 0.06), rgba(23, 201, 163, 0.02)), url('/images/home-dashboard-bg.jpg');
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
   border: 1rpx solid var(--border);
   border-radius: 52rpx;
   padding: 52rpx 44rpx 44rpx;
   box-shadow: 0 20rpx 60rpx -24rpx rgba(20, 24, 33, 0.14), 0 8rpx 28rpx -16rpx rgba(11, 107, 99, 0.12);
 }
 
+/* 用真实的 <image> 铺背景图——WXSS 的 background-image: url(本地路径)
+   在小程序里经常不渲染，本地图片必须走 <image> 组件才可靠 */
+.dashboard-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.dashboard-tint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-image: linear-gradient(160deg, rgba(11, 107, 99, 0.06), rgba(23, 201, 163, 0.02));
+}
+
 .dash-row {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 44rpx;

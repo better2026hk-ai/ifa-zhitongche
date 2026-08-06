@@ -27,6 +27,8 @@
   </view>
 
   <view class="dashboard">
+    <image class="dashboard-bg" src="/images/home-dashboard-bg.jpg" mode="aspectFill" />
+    <view class="dashboard-tint"></view>
     <view class="dash-row">
       <view class="ring-outer" style="background:conic-gradient(var(--green) 0%, var(--green-bright) {{current.pct}}%, rgba(20,24,33,0.08) {{current.pct}}% 100%);">
         <view class="ring-inner">
