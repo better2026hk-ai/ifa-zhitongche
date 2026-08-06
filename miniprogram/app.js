@@ -18,8 +18,10 @@ App({
   //
   // wx.loadFontFace 的 source 不能直接传包内路径（比如 "/fonts/x.ttf"）——
   // 它会被当成需要下载的网络地址，报 "createDownloadTask:fail invalid url"。
-  // 本地字体必须先用文件系统 API 把文件拷贝到 wx.env.USER_DATA_PATH 这个真实
-  // 的本地路径下，再用那个路径去注册。
+  // 本地字体必须先落到 wx.env.USER_DATA_PATH 这个真实的本地路径下才能用。
+  // fs.copyFile 的 srcPath 传包内路径会报 "permission denied"（包内资源不是
+  // 普通文件系统路径，不能直接当拷贝源），所以改成 readFile 读出二进制内容
+  // 再 writeFile 写到 USER_DATA_PATH——读包内资源官方是支持的，只是不能"拷贝"。
   loadCustomFonts() {
     const fonts = [
       { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-Regular.ttf', weight: '400' },
@@ -51,12 +53,20 @@ App({
       path: destPath,
       success: register,
       fail: () => {
-        fs.copyFile({
-          srcPath: `/fonts/${file}`,
-          destPath,
-          success: register,
+        fs.readFile({
+          filePath: `/fonts/${file}`,
+          success: (res) => {
+            fs.writeFile({
+              filePath: destPath,
+              data: res.data,
+              success: register,
+              fail(err) {
+                console.warn(`写入字体文件失败: ${file}`, err);
+              }
+            });
+          },
           fail(err) {
-            console.warn(`拷贝字体文件失败: ${file}`, err);
+            console.warn(`读取字体文件失败: ${file}`, err);
           }
         });
       }
