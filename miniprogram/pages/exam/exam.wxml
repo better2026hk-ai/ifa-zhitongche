@@ -1,5 +1,20 @@
-<view class="placeholder-wrap">
-  <view class="placeholder-ico"><image src="{{icon}}" /></view>
-  <view class="placeholder-title">模拟考试</view>
-  <view class="placeholder-desc">限时限量、交卷出分的模拟考试功能正在开发中，下一步实现。</view>
-</view>
+<scroll-view class="home-scroll" scroll-y="true">
+  <image class="hero-banner" src="/images/exam-list-banner.jpg" mode="widthFix" />
+  <view class="paper-list">
+    <view
+      wx:for="{{papers}}"
+      wx:key="key"
+      class="paper-card"
+      data-key="{{item.key}}"
+      bindtap="onSelectExam"
+    >
+      <view class="paper-icon">{{item.tag}}</view>
+      <view class="paper-mid">
+        <view class="paper-title">{{item.title}}</view>
+        <view class="paper-sub">{{item.totalQuestions}} 题 · {{item.durationMinutes}} 分钟 · 合格 {{item.passCount}} 题</view>
+      </view>
+      <view class="paper-right"><text class="paper-arrow">›</text></view>
+    </view>
+  </view>
+  <view style="height:200rpx;"></view>
+</scroll-view>

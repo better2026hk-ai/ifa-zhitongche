@@ -1,0 +1,77 @@
+/* 模拟考试记录卡片——"我的"页预览 3 条和历史记录列表页共用 */
+
+.history-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 32rpx;
+  padding: 26rpx 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 28rpx -16rpx rgba(20, 24, 33, 0.08);
+}
+
+.history-mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-title {
+  font-weight: 650;
+  font-size: 27rpx;
+  color: var(--text-0);
+}
+
+.history-sub {
+  font-size: 22rpx;
+  color: var(--text-1);
+  margin-top: 6rpx;
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+}
+
+.history-score {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.history-pct {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-weight: 700;
+  font-size: 30rpx;
+}
+
+.history-badge {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 19rpx;
+  font-weight: 700;
+  padding: 4rpx 14rpx;
+  border-radius: 12rpx;
+  margin-top: 8rpx;
+  display: inline-block;
+  letter-spacing: 0.3rpx;
+}
+
+.history-badge.pass {
+  background: rgba(11, 107, 99, 0.1);
+  color: var(--green);
+}
+
+.history-badge.fail {
+  background: var(--coral-tint);
+  color: var(--coral);
+}
+
+.history-more {
+  justify-content: center;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 32rpx;
+  box-shadow: 0 8rpx 28rpx -16rpx rgba(20, 24, 33, 0.08);
+  margin-bottom: 20rpx;
+  padding: 26rpx;
+  text-align: center;
+  color: var(--green);
+  font-weight: 700;
+  font-size: 26rpx;
+}

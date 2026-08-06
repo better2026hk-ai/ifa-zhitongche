@@ -4,15 +4,24 @@
 // 现在还没有接微信云开发，所以先用 wx.storage 落地，字段名和读写方式都对齐文档，
 // 后面接云开发时只需要把这个文件里的实现换成云函数调用，调用方（各 page）不用改。
 
+const { HOME_BANKS } = require('./banks.js');
+
 const KEYS = {
   LOGGED_IN: 'ifa_logged_in',
   PROFILE: 'ifa_profile', // { nickname, avatarUrl }
   FIRST_LOGIN_AT: 'ifa_first_login_at', // timestamp (ms)
   PAPER_STATS: 'ifa_paper_stats', // { [paperKey]: { done, correct } }
-  ACTIVITY_DATES: 'ifa_activity_dates' // string[] of 'YYYY-MM-DD'
+  ACTIVITY_DATES: 'ifa_activity_dates', // string[] of 'YYYY-MM-DD'
+  WRONG_BOOK: 'ifa_wrong_book', // [{ key, paperKey, paperTag, paperName, stem, options, answer, lastPicked, explanation, wrongAt }]
+  EXAM_HISTORY: 'ifa_exam_history' // [{ paperKey, paperTag, paperName, config, questions, answers, total, correct, passed, timestamp }]
 };
 
 const PAPER_KEYS = ['p1', 'p2', 'p3', 'p5', 'mpf'];
+
+function getPaperMeta(paperKey) {
+  const bank = HOME_BANKS.find((b) => b.key === paperKey);
+  return bank ? { tag: bank.tag, title: bank.title } : { tag: paperKey, title: '' };
+}
 
 function defaultPaperStats() {
   const stats = {};
@@ -116,6 +125,120 @@ function logout() {
   setLoggedIn(false);
 }
 
+/* ============================================================
+   错题本 —— 技术交接文档 3.3 / 5.4 节
+   去重键: paperKey + stem。答错写入/更新，答对且存在则删除。
+============================================================ */
+
+function getWrongBook() {
+  return wx.getStorageSync(KEYS.WRONG_BOOK) || [];
+}
+
+function saveWrongBook(list) {
+  wx.setStorageSync(KEYS.WRONG_BOOK, list);
+}
+
+function getWrongBookForPaper(paperKey) {
+  return getWrongBook().filter((w) => w.paperKey === paperKey);
+}
+
+// 错题本列表页只显示"科目 + 错题数"，按第一次出现的顺序分组
+// （不要一上来就把所有错题铺出来 —— 文档 4.5 节）。
+function getWrongBookGrouped() {
+  const grouped = [];
+  const byKey = {};
+  getWrongBook().forEach((w) => {
+    if (!byKey[w.paperKey]) {
+      byKey[w.paperKey] = { key: w.paperKey, tag: w.paperTag, name: w.paperName, count: 0 };
+      grouped.push(byKey[w.paperKey]);
+    }
+    byKey[w.paperKey].count++;
+  });
+  return grouped;
+}
+
+function removeWrongBookEntry(dedupeKey) {
+  const list = getWrongBook();
+  const idx = list.findIndex((w) => w.key === dedupeKey);
+  if (idx >= 0) {
+    list.splice(idx, 1);
+    saveWrongBook(list);
+  }
+}
+
+// 答对 -> 如果错题本里有这题就删掉；答错 -> 写入/更新（已存在则只刷新
+// lastPicked/wrongAt，不重复插入）。练习模式、模拟考试、错题本自己的测验
+// 三处都要调用这个函数，不区分来源（文档 5.4 节）。
+function updateWrongBookOnAnswer(paperKey, q, pickedLetter) {
+  if (!pickedLetter) return;
+  const dedupeKey = `${paperKey}::${q.stem}`;
+  const list = getWrongBook();
+  const idx = list.findIndex((w) => w.key === dedupeKey);
+
+  if (pickedLetter === q.answer) {
+    if (idx >= 0) {
+      list.splice(idx, 1);
+      saveWrongBook(list);
+    }
+    return;
+  }
+
+  const meta = getPaperMeta(paperKey);
+  const entry = {
+    key: dedupeKey,
+    paperKey,
+    paperTag: meta.tag,
+    paperName: meta.title,
+    stem: q.stem,
+    options: q.options,
+    answer: q.answer,
+    lastPicked: pickedLetter,
+    explanation: q.explanation || '',
+    wrongAt: Date.now()
+  };
+  if (idx >= 0) list[idx] = entry;
+  else list.unshift(entry);
+  saveWrongBook(list);
+}
+
+/* ============================================================
+   模拟考试记录 —— 技术交接文档 3.3 / 4.6 节
+============================================================ */
+
+function getExamHistory() {
+  return wx.getStorageSync(KEYS.EXAM_HISTORY) || [];
+}
+
+function addExamHistory(entry) {
+  const list = getExamHistory();
+  list.unshift(entry);
+  wx.setStorageSync(KEYS.EXAM_HISTORY, list);
+}
+
+function getExamHistoryEntry(index) {
+  return getExamHistory()[index] || null;
+}
+
+/* ============================================================
+   "我的"页学习总览的 6 个数字 —— 技术交接文档 4.3 节
+============================================================ */
+
+function computeOverviewStats() {
+  const stats = getPaperStats();
+  let totalPracticed = 0;
+  let totalCorrect = 0;
+  Object.keys(stats).forEach((k) => {
+    totalPracticed += stats[k].done;
+    totalCorrect += stats[k].correct;
+  });
+  const avgAcc = totalPracticed > 0 ? Math.round((totalCorrect / totalPracticed) * 100) : 0;
+  const history = getExamHistory();
+  const examCount = history.length;
+  const passCount = history.filter((h) => h.passed).length;
+  const wrongCount = getWrongBook().length;
+  return { totalPracticed, avgAcc, streak: computeStreak(), examCount, passCount, wrongCount };
+}
+
 module.exports = {
   KEYS,
   isLoggedIn,
@@ -129,5 +252,15 @@ module.exports = {
   getBankStats,
   recordAnswerStat,
   generateBankDesc,
+  getPaperMeta,
+  getWrongBook,
+  getWrongBookForPaper,
+  getWrongBookGrouped,
+  removeWrongBookEntry,
+  updateWrongBookOnAnswer,
+  getExamHistory,
+  addExamHistory,
+  getExamHistoryEntry,
+  computeOverviewStats,
   logout
 };

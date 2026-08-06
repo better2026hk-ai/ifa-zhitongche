@@ -1,25 +1,5 @@
 @import "../../styles/shared.wxss";
 
-.review-top {
-  flex-shrink: 0;
-  padding: 28rpx 40rpx 20rpx;
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-}
-
-.review-title {
-  font-weight: 700;
-  font-size: 30rpx;
-  color: var(--text-0);
-}
-
-.exam-content {
-  height: calc(100vh - 120rpx);
-  padding: 16rpx 40rpx 32rpx;
-  box-sizing: border-box;
-}
-
 .policy-updated {
   font-family: "JetBrains Mono", "SF Mono", monospace;
   font-size: 22rpx;

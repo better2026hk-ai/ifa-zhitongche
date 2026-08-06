@@ -1,4 +1,24 @@
 @import "../../styles/confirm.wxss";
+@import "../../styles/history.wxss";
+
+.paper-icon {
+  height: 84rpx;
+  min-width: 168rpx;
+  padding: 0 24rpx;
+  border-radius: 24rpx;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-weight: 700;
+  font-size: 25rpx;
+  letter-spacing: -0.4rpx;
+  color: var(--text-1);
+  white-space: nowrap;
+}
 
 .home-scroll {
   height: 100vh;
@@ -82,6 +102,12 @@
   color: var(--text-0);
 }
 
+.section-count {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 24rpx;
+  color: var(--text-2);
+}
+
 .empty-note {
   padding: 8rpx 4rpx 0;
 }
@@ -90,6 +116,38 @@
   font-size: 25rpx;
   color: var(--text-1);
   line-height: 1.6;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 32rpx;
+  padding: 26rpx 24rpx;
+  box-shadow: 0 8rpx 28rpx -16rpx rgba(20, 24, 33, 0.1);
+}
+
+.stat-num {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--text-0);
+}
+
+.stat-num.up {
+  color: var(--up);
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: var(--text-1);
+  margin-top: 8rpx;
 }
 
 .settings-group {

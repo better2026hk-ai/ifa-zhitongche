@@ -6,7 +6,14 @@
     "pages/exam/exam",
     "pages/wrongbook/wrongbook",
     "pages/profile/profile",
-    "pages/policy/policy"
+    "pages/policy/policy",
+    "pages/exam-history/exam-history"
+  ],
+  "subPackages": [
+    {
+      "root": "packageExam",
+      "pages": ["pages/flow/flow"]
+    }
   ],
   "window": {
     "navigationStyle": "custom",

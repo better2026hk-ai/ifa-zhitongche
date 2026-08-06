@@ -16,9 +16,44 @@
   <view class="section-head" style="margin-top:0;">
     <text class="section-title">学习总览</text>
   </view>
-  <view class="empty-note">
-    <text class="placeholder-desc">练习记录、模拟考试统计、错题本等功能正在开发中，下一步实现后这里会显示真实数据。</text>
+  <view class="overview-grid">
+    <view class="stat-card"><view class="stat-num">{{overview.totalPracticed}}</view><view class="stat-label">已练习题数</view></view>
+    <view class="stat-card"><view class="stat-num up">{{overview.avgAcc}}%</view><view class="stat-label">平均正确率</view></view>
+    <view class="stat-card"><view class="stat-num">{{overview.streak}}</view><view class="stat-label">连续打卡天数</view></view>
+    <view class="stat-card"><view class="stat-num">{{overview.examCount}}</view><view class="stat-label">模考次数</view></view>
+    <view class="stat-card"><view class="stat-num up">{{overview.passCount}}</view><view class="stat-label">模考通过</view></view>
+    <view class="stat-card"><view class="stat-num" style="color:var(--coral)">{{overview.wrongCount}}</view><view class="stat-label">当前错题</view></view>
   </view>
+
+  <view class="section-head">
+    <text class="section-title">模拟考试记录</text>
+    <text class="section-count">{{overview.examCount}} 次</text>
+  </view>
+  <view wx:if="{{overview.examCount === 0}}" class="empty-note">
+    <text class="placeholder-desc">还没有模拟考试记录，去挑战一次试试吧。</text>
+  </view>
+  <block wx:else>
+    <view
+      wx:for="{{historyPreview}}"
+      wx:key="index"
+      class="history-card"
+      data-index="{{index}}"
+      bindtap="onOpenHistory"
+    >
+      <view class="paper-icon">{{item.paperTag}}</view>
+      <view class="history-mid">
+        <view class="history-title">{{item.paperName}}</view>
+        <view class="history-sub">{{item.dateStr}}</view>
+      </view>
+      <view class="history-score">
+        <view class="history-pct" style="color:{{item.passed ? 'var(--green)' : 'var(--coral)'}}">{{item.pct}}%</view>
+        <view class="history-badge {{item.passed ? 'pass' : 'fail'}}">{{item.passed ? 'PASS' : 'FAIL'}}</view>
+      </view>
+    </view>
+    <view wx:if="{{overview.examCount > 3}}" class="history-more" bindtap="openExamHistoryList">
+      查看历史记录（近 {{historyCountLabel}} 次）
+    </view>
+  </block>
 
   <view class="section-head">
     <text class="section-title">设置</text>

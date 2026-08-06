@@ -1,0 +1,147 @@
+/* 通用的"整屏滚动列表"样式：首页/模拟考试列表/错题本列表都是这个骨架 —
+   顶部横幅图 + section 标题 + 一组 paper-card。 */
+
+.home-scroll {
+  height: 100vh;
+  padding: 12rpx 40rpx 0;
+  box-sizing: border-box;
+}
+
+.hero-banner {
+  width: 100%;
+  border-radius: 48rpx;
+  display: block;
+  margin: 12rpx 0 40rpx;
+  box-shadow: 0 20rpx 56rpx -28rpx rgba(20, 24, 33, 0.18);
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 52rpx 4rpx 24rpx;
+}
+
+.section-title {
+  font-weight: 700;
+  font-size: 33rpx;
+  letter-spacing: -0.3rpx;
+  color: var(--text-0);
+}
+
+.section-count {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 24rpx;
+  color: var(--text-2);
+}
+
+.paper-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.paper-card {
+  display: flex;
+  align-items: center;
+  gap: 28rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 36rpx;
+  padding: 28rpx;
+  box-shadow: 0 8rpx 28rpx -16rpx rgba(20, 24, 33, 0.08);
+}
+
+.paper-card.active {
+  border-color: rgba(11, 107, 99, 0.35);
+  background: linear-gradient(120deg, rgba(11, 107, 99, 0.06), rgba(207, 234, 230, 0.03));
+}
+
+.paper-card.disabled {
+  opacity: 0.5;
+}
+
+.paper-icon {
+  height: 84rpx;
+  min-width: 168rpx;
+  padding: 0 24rpx;
+  border-radius: 24rpx;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-2);
+  border: 1rpx solid var(--border);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-weight: 700;
+  font-size: 25rpx;
+  letter-spacing: -0.4rpx;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.paper-card.active .paper-icon {
+  background: linear-gradient(140deg, var(--green), var(--green-bright));
+  box-shadow: 0 12rpx 28rpx -12rpx rgba(11, 107, 99, 0.5);
+  color: #fff;
+  border-color: transparent;
+}
+
+.paper-mid {
+  flex: 1;
+  min-width: 0;
+}
+
+.paper-title {
+  font-weight: 700;
+  font-size: 29rpx;
+  letter-spacing: -0.2rpx;
+  color: var(--text-0);
+}
+
+.paper-sub {
+  font-size: 23rpx;
+  color: var(--text-1);
+  margin-top: 6rpx;
+}
+
+.paper-progress {
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: rgba(20, 24, 33, 0.07);
+  margin-top: 16rpx;
+  overflow: hidden;
+}
+
+.paper-progress-fill {
+  height: 100%;
+  border-radius: 4rpx;
+  background: linear-gradient(90deg, var(--green), var(--green-bright));
+}
+
+.paper-right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.paper-frac {
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-size: 25rpx;
+  color: var(--text-1);
+}
+
+.paper-arrow {
+  color: var(--text-2);
+  font-size: 32rpx;
+  margin-top: 12rpx;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 40rpx;
+  text-align: center;
+  gap: 20rpx;
+}

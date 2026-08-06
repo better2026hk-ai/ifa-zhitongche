@@ -1,0 +1,25 @@
+<view class="review-top">
+  <view class="back-btn" bindtap="goBack">
+    <image class="back-ico" src="{{backIcon}}" />
+  </view>
+  <text class="review-title">模拟考试记录（近 {{items.length}} 次）</text>
+</view>
+<scroll-view class="exam-content" scroll-y="true">
+  <view
+    wx:for="{{items}}"
+    wx:key="index"
+    class="history-card"
+    data-index="{{index}}"
+    bindtap="onOpenHistory"
+  >
+    <view class="paper-icon">{{item.paperTag}}</view>
+    <view class="history-mid">
+      <view class="history-title">{{item.paperName}}</view>
+      <view class="history-sub">{{item.dateStr}}</view>
+    </view>
+    <view class="history-score">
+      <view class="history-pct" style="color:{{item.passed ? 'var(--green)' : 'var(--coral)'}}">{{item.pct}}%</view>
+      <view class="history-badge {{item.passed ? 'pass' : 'fail'}}">{{item.passed ? 'PASS' : 'FAIL'}}</view>
+    </view>
+  </view>
+</scroll-view>

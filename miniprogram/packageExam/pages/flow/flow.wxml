@@ -1,0 +1,205 @@
+<!-- ================= 开考规则页 ================= -->
+<view wx:if="{{phase === 'start'}}" class="start-wrap">
+  <view class="start-back-row">
+    <view class="back-btn" bindtap="goBack">
+      <image class="back-ico" src="{{icons.back}}" />
+    </view>
+  </view>
+  <view class="start-badge">模拟考试</view>
+  <view class="start-title">{{config.name}}</view>
+  <view class="start-desc">模拟真实考试的题量与时限，交卷前可随时检查、修改答案；作答过程中不会提示对错。</view>
+
+  <view class="rule-card">
+    <view class="rule-row">
+      <view class="rule-label">
+        <view class="rule-ico"><image src="{{icons.clock}}" /></view>
+        <text>考试时长</text>
+      </view>
+      <view class="rule-value">{{config.durationMinutes}} 分钟</view>
+    </view>
+    <view class="rule-row">
+      <view class="rule-label">
+        <view class="rule-ico"><image src="{{icons.list}}" /></view>
+        <text>总题数</text>
+      </view>
+      <view class="rule-value">{{config.totalQuestions}} 题</view>
+    </view>
+    <view class="rule-row">
+      <view class="rule-label">
+        <view class="rule-ico"><image src="{{icons.target}}" /></view>
+        <text>合格标准 (70%)</text>
+      </view>
+      <view class="rule-value">{{config.passCount}} 题</view>
+    </view>
+  </view>
+
+  <view class="spacer"></view>
+  <button class="start-btn" bindtap="startExam">开始模拟考试</button>
+</view>
+
+<!-- ================= 答题页 ================= -->
+<view wx:elif="{{phase === 'exam'}}" class="exam-wrap-flex">
+  <view class="exam-top">
+    <view class="exam-top-row">
+      <view class="exam-name">{{config.name}}</view>
+      <view class="top-right-group">
+        <view class="timer {{timerWarn ? 'warn' : ''}}">
+          <image src="{{icons.timerClock}}" /><text>{{timeLabel}}</text>
+        </view>
+        <button class="submit-mini-btn" bindtap="askSubmit">交卷</button>
+      </view>
+    </view>
+    <view class="exam-progress-row">
+      <text class="exam-progress-label">第 {{currentIndex+1}} / {{questions.length}} 题</text>
+      <text class="exam-progress-count">已作答 {{answeredCount}}/{{questions.length}}</text>
+    </view>
+    <view class="exam-progress-track"><view class="exam-progress-fill" style="width:{{progressPct}}%"></view></view>
+  </view>
+
+  <scroll-view class="exam-scroll" scroll-y="true">
+    <view class="q-card">
+      <view class="q-stem">{{currentQuestion.displayStem}}</view>
+      <view class="options">
+        <view
+          wx:for="{{letters}}"
+          wx:key="*this"
+          class="option {{picked === item ? 'picked' : ''}}"
+          data-letter="{{item}}"
+          bindtap="pickAnswer"
+        >
+          <view class="option-letter">{{item}}</view>
+          <view class="option-text">{{currentQuestion.options[item]}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="exam-footer">
+    <view class="nav-btn {{currentIndex === 0 ? 'disabled' : ''}}" data-index="{{currentIndex - 1}}" bindtap="gotoQuestion">
+      <image src="{{icons.back}}" /><text>上一题</text>
+    </view>
+    <view class="grid-btn" bindtap="toggleNavigator">
+      <image src="{{icons.listDark}}" /><text>题号导航</text>
+    </view>
+    <view class="nav-btn {{currentIndex === questions.length - 1 ? 'disabled' : ''}}" data-index="{{currentIndex + 1}}" bindtap="gotoQuestion">
+      <text>下一题</text><image src="{{icons.next}}" />
+    </view>
+  </view>
+</view>
+
+<!-- ================= 出分页 ================= -->
+<view wx:elif="{{phase === 'result'}}" class="result-wrap">
+  <view class="result-pass-badge {{passed ? 'pass' : 'fail'}}">{{resultBadgeText}}</view>
+  <view class="result-ring" style="{{resultRingStyle}}">
+    <view class="result-ring-inner">
+      <view class="result-pct">{{resultPct}}%</view>
+      <view class="result-frac">{{correct}} / {{total}}</view>
+    </view>
+  </view>
+  <view class="result-title">{{resultTitle}}</view>
+  <view class="result-desc">{{resultDesc}}</view>
+
+  <view class="result-stats">
+    <view class="rstat-card"><view class="rstat-num" style="color:var(--green)">{{correct}}</view><view class="rstat-label">答对</view></view>
+    <view class="rstat-card"><view class="rstat-num" style="color:var(--coral)">{{wrongCount}}</view><view class="rstat-label">答错</view></view>
+    <view class="rstat-card"><view class="rstat-num" style="color:var(--text-2)">{{blankCount}}</view><view class="rstat-label">未作答</view></view>
+  </view>
+
+  <view class="result-actions">
+    <button class="result-btn primary" bindtap="openReview">逐题复盘</button>
+    <button class="result-btn ghost" bindtap="restartExam">重新测试</button>
+    <button class="result-btn text" bindtap="exitToList">{{viewingHistory ? '返回' : '返回题库列表'}}</button>
+  </view>
+</view>
+
+<!-- ================= 逐题复盘页 ================= -->
+<view wx:elif="{{phase === 'review'}}" class="exam-wrap-flex">
+  <view class="review-top">
+    <view class="back-btn" bindtap="backToResult">
+      <image class="back-ico" src="{{icons.back}}" />
+    </view>
+    <text class="review-title">复盘 · 第 {{reviewIndex+1}} / {{questions.length}} 题</text>
+  </view>
+
+  <scroll-view class="exam-scroll" scroll-y="true">
+    <view class="q-card">
+      <view class="rev-tag {{reviewIsBlank ? 'blank' : (reviewIsCorrect ? 'correct' : 'wrong')}}">
+        {{reviewIsBlank ? '未作答' : (reviewIsCorrect ? '✔ 回答正确' : '✕ 回答错误')}}
+      </view>
+      <view class="q-stem">{{reviewQuestion.displayStem}}</view>
+      <view class="options">
+        <view
+          wx:for="{{letters}}"
+          wx:key="*this"
+          class="option {{item === reviewQuestion.answer ? 'rev-correct' : (item === reviewPicked ? 'rev-wrong' : 'rev-dim')}}"
+        >
+          <view class="option-letter">{{item}}</view>
+          <view class="option-text">{{reviewQuestion.options[item]}}</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{reviewQuestion.explanation}}" class="explain">
+      <view class="explain-head">
+        <view class="explain-icon"><image src="{{icons.bulb}}" /></view>
+        <text class="explain-label">解析</text>
+      </view>
+      <view class="explain-text">{{reviewQuestion.explanation}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="exam-footer">
+    <view class="nav-btn {{reviewIndex === 0 ? 'disabled' : ''}}" data-index="{{reviewIndex - 1}}" bindtap="gotoReview">
+      <image src="{{icons.back}}" /><text>上一题</text>
+    </view>
+    <view class="grid-btn" bindtap="toggleReviewNavigator">
+      <image src="{{icons.listDark}}" /><text>题号导航</text>
+    </view>
+    <view class="nav-btn {{reviewIndex === questions.length - 1 ? 'disabled' : ''}}" data-index="{{reviewIndex + 1}}" bindtap="gotoReview">
+      <text>下一题</text><image src="{{icons.next}}" />
+    </view>
+  </view>
+</view>
+
+<!-- ================= 题号导航底部面板（答题页/复盘页共用） ================= -->
+<view class="sheet-overlay {{navVisible ? 'show' : ''}}" bindtap="closeNavigator"></view>
+<view class="sheet {{navVisible ? 'show' : ''}}">
+  <view class="sheet-handle"></view>
+  <view class="sheet-title-row">
+    <text class="sheet-title">题号导航</text>
+    <view class="legend" wx:if="{{!reviewNav}}">
+      <view class="legend-item"><view class="legend-dot" style="background:linear-gradient(140deg,#0B6B63,#17C9A3)"></view>已作答</view>
+      <view class="legend-item"><view class="legend-dot" style="background:#F1F3F7;border:1rpx solid rgba(20,24,33,0.07)"></view>未作答</view>
+    </view>
+    <view class="legend" wx:else>
+      <view class="legend-item"><view class="legend-dot" style="background:linear-gradient(140deg,#0B6B63,#17C9A3)"></view>正确</view>
+      <view class="legend-item"><view class="legend-dot" style="background:#E2604B"></view>错误</view>
+      <view class="legend-item"><view class="legend-dot" style="background:#F1F3F7;border:1rpx solid rgba(20,24,33,0.07)"></view>未答</view>
+    </view>
+  </view>
+  <view class="qgrid">
+    <view
+      wx:for="{{navCells}}"
+      wx:key="index"
+      class="qcell
+        {{!reviewNav && item.answered ? 'answered' : ''}}
+        {{reviewNav && item.state === 'correct' ? 'rev-correct' : ''}}
+        {{reviewNav && item.state === 'wrong' ? 'rev-wrong' : ''}}
+        {{reviewNav && item.state === 'blank' ? 'rev-blank' : ''}}
+        {{item.current ? 'current' : ''}}"
+      data-index="{{item.index}}"
+      bindtap="onNavCellTap"
+    >{{item.num}}</view>
+  </view>
+</view>
+
+<!-- ================= 交卷确认弹窗 ================= -->
+<view class="confirm-overlay {{confirmVisible ? 'show' : ''}}">
+  <view class="confirm-box">
+    <view class="confirm-title">交卷确认</view>
+    <view class="confirm-text">{{confirmMessage}}</view>
+    <view class="confirm-actions">
+      <button class="confirm-btn danger" bindtap="finishExam">是</button>
+      <button class="confirm-btn ghost" bindtap="closeConfirmDialog">否</button>
+    </view>
+  </view>
+</view>

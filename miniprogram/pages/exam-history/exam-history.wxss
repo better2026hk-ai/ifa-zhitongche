@@ -1,0 +1,3 @@
+@import "../../styles/shared.wxss";
+@import "../../styles/list.wxss";
+@import "../../styles/history.wxss";

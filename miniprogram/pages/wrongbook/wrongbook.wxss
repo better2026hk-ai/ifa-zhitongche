@@ -1,1 +1,5 @@
+@import "../../styles/list.wxss";
+@import "../../styles/shared.wxss";
+@import "../../styles/exam.wxss";
 @import "../../styles/placeholder.wxss";
+@import "../../styles/wrongbook.wxss";

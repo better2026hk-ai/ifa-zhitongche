@@ -1,5 +1,152 @@
-<view class="placeholder-wrap">
-  <view class="placeholder-ico"><image src="{{icon}}" /></view>
-  <view class="placeholder-title">错题本</view>
-  <view class="placeholder-desc">自动收录、可重新组卷测验的错题本功能正在开发中，下一步实现。</view>
+<!-- ================= 列表页：科目 + 错题数 ================= -->
+<scroll-view wx:if="{{screen === 'list'}}" class="home-scroll" scroll-y="true">
+  <image class="hero-banner" src="/images/wrongbook-banner.jpg" mode="widthFix" />
+  <view wx:if="{{grouped.length === 0}}" class="empty-state">
+    <view class="placeholder-ico"><image src="{{icons.emptyBook}}" /></view>
+    <view class="placeholder-title">还没有错题</view>
+    <view class="placeholder-desc">答错的题目会自动出现在这里。</view>
+  </view>
+  <view wx:else class="paper-list">
+    <view wx:for="{{grouped}}" wx:key="key" class="paper-card" data-key="{{item.key}}" bindtap="openPaper">
+      <view class="paper-icon">{{item.tag}}</view>
+      <view class="paper-mid">
+        <view class="paper-title">{{item.name}}</view>
+        <view class="paper-sub">{{item.count}} 道错题</view>
+      </view>
+      <view class="paper-right"><text class="paper-arrow">›</text></view>
+    </view>
+  </view>
+  <view style="height:200rpx;"></view>
+</scroll-view>
+
+<!-- ================= 错题详情页 ================= -->
+<view wx:elif="{{screen === 'detail'}}" class="exam-wrap-flex">
+  <view class="review-top">
+    <view class="back-btn" bindtap="backToList">
+      <image class="back-ico" src="{{icons.back}}" />
+    </view>
+    <text class="review-title">{{paperTitle}} · 错题（{{items.length}}）</text>
+  </view>
+  <scroll-view class="exam-scroll" scroll-y="true">
+    <view wx:for="{{items}}" wx:key="key" class="wrong-card">
+      <view class="wrong-card-head" data-key="{{item.key}}" bindtap="toggleDetail">
+        <view class="paper-icon">{{item.paperTag}}</view>
+        <view class="paper-mid">
+          <view class="wrong-card-title">{{item.displayStem}}</view>
+          <view class="wrong-card-sub">{{item.paperName}}</view>
+        </view>
+        <image class="wrong-card-toggle {{item.expanded ? 'open' : ''}}" src="{{icons.chevronDown}}" />
+      </view>
+      <view wx:if="{{item.expanded}}" class="wrong-card-detail">
+        <view class="q-stem" style="font-size:27rpx;margin-bottom:24rpx;">{{item.displayStem}}</view>
+        <view class="options">
+          <view
+            wx:for="{{letters}}"
+            wx:for-item="l"
+            wx:key="*this"
+            class="option {{l === item.answer ? 'rev-correct' : (l === item.lastPicked ? 'rev-wrong' : 'rev-dim')}}"
+          >
+            <view class="option-letter">{{l}}</view>
+            <view class="option-text">{{item.options[l]}}</view>
+          </view>
+        </view>
+        <view wx:if="{{item.explanation}}" class="explain">
+          <view class="explain-head">
+            <view class="explain-icon"><image src="{{icons.bulb}}" /></view>
+            <text class="explain-label">解析</text>
+          </view>
+          <view class="explain-text">{{item.explanation}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="select-footer">
+    <button class="wide-btn" bindtap="goToSelect">组一次错题测验</button>
+  </view>
+</view>
+
+<!-- ================= 选题组卷页 ================= -->
+<view wx:elif="{{screen === 'select'}}" class="exam-wrap-flex">
+  <view class="review-top">
+    <view class="back-btn" bindtap="backToDetail">
+      <image class="back-ico" src="{{icons.back}}" />
+    </view>
+    <text class="review-title">选择错题组卷</text>
+    <view class="select-all-btn" bindtap="toggleSelectAll">{{allChecked ? '取消全选' : '全选'}}</view>
+  </view>
+  <scroll-view class="exam-scroll" scroll-y="true">
+    <view
+      wx:for="{{selectItems}}"
+      wx:key="key"
+      class="wrong-card"
+      data-key="{{item.key}}"
+      bindtap="toggleSelectOne"
+    >
+      <view class="wrong-card-head">
+        <view class="check-circle {{item.checked ? 'checked' : ''}}">
+          <image wx:if="{{item.checked}}" src="{{icons.check}}" />
+        </view>
+        <view class="paper-mid">
+          <view class="wrong-card-title">{{item.displayStem}}</view>
+          <view class="wrong-card-sub">{{item.paperName}}</view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="select-footer">
+    <button class="wide-btn" style="flex:1;" disabled="{{selectedCount === 0}}" bindtap="startQuiz">开始测验（已选 {{selectedCount}} 题）</button>
+  </view>
+</view>
+
+<!-- ================= 错题测验页（即时反馈，同练习模式） ================= -->
+<view wx:elif="{{screen === 'quiz'}}" class="exam-wrap-flex">
+  <view class="exam-top">
+    <view class="exam-top-row"><view class="exam-name">错题测验</view></view>
+    <view class="exam-progress-row">
+      <text class="exam-progress-label">第 {{quizIndex+1}} / {{quizTotal}} 题</text>
+      <text class="exam-progress-count">正确 {{quizCorrectCount}}</text>
+    </view>
+    <view class="exam-progress-track"><view class="exam-progress-fill" style="width:{{quizProgressPct}}%"></view></view>
+  </view>
+  <scroll-view class="exam-scroll" scroll-y="true">
+    <view class="q-card">
+      <view wx:if="{{quizAnswered}}" class="rev-tag {{quizPicked === currentQuizQuestion.answer ? 'correct' : 'wrong'}}">
+        {{quizPicked === currentQuizQuestion.answer ? '✔ 回答正确' : '✕ 回答错误'}}
+      </view>
+      <view class="q-stem">{{currentQuizQuestion.displayStem}}</view>
+      <view class="options">
+        <view
+          wx:for="{{letters}}"
+          wx:key="*this"
+          class="option {{quizAnswered ? (item === currentQuizQuestion.answer ? 'rev-correct' : (item === quizPicked ? 'rev-wrong' : 'rev-dim')) : ''}}"
+          data-letter="{{item}}"
+          bindtap="pickQuizAnswer"
+        >
+          <view class="option-letter">{{item}}</view>
+          <view class="option-text">{{currentQuizQuestion.options[item]}}</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{quizAnswered && currentQuizQuestion.explanation}}" class="explain">
+      <view class="explain-head">
+        <view class="explain-icon"><image src="{{icons.bulb}}" /></view>
+        <text class="explain-label">解析</text>
+      </view>
+      <view class="explain-text">{{currentQuizQuestion.explanation}}</view>
+    </view>
+  </scroll-view>
+  <view class="exam-footer">
+    <button class="start-btn" style="margin:0;flex:1;" disabled="{{!quizAnswered}}" bindtap="nextQuizQuestion">
+      {{quizIndex + 1 === quizTotal ? '完成测验' : '下一题'}}
+    </button>
+  </view>
+</view>
+
+<!-- ================= 测验完成页 ================= -->
+<view wx:elif="{{screen === 'done'}}" class="result-wrap">
+  <view class="result-title">错题测验完成</view>
+  <view class="result-desc">本次共 {{doneTotal}} 题，答对 {{doneCorrect}} 题，正确率 {{donePct}}%。</view>
+  <view class="result-actions">
+    <button class="result-btn primary" bindtap="backToDetailFromDone">返回错题列表</button>
+  </view>
 </view>

@@ -1,0 +1,4 @@
+@import "../../../styles/shared.wxss";
+@import "../../../styles/sheet.wxss";
+@import "../../../styles/confirm.wxss";
+@import "../../../styles/exam.wxss";
