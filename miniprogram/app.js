@@ -15,6 +15,11 @@ App({
   // 用 JetBrains Mono——这两个都不是系统自带字体，写了 font-family 名字但不用
   // wx.loadFontFace() 注册的话会静默 fallback 到系统字体，跟设计稿字形差异很大
   // （尤其是标题里混排的英文/数字，比如"Paper Ⅱ""15%"）。只打了实际用到的字重。
+  //
+  // wx.loadFontFace 的 source 不能直接传包内路径（比如 "/fonts/x.ttf"）——
+  // 它会被当成需要下载的网络地址，报 "createDownloadTask:fail invalid url"。
+  // 本地字体必须先用文件系统 API 把文件拷贝到 wx.env.USER_DATA_PATH 这个真实
+  // 的本地路径下，再用那个路径去注册。
   loadCustomFonts() {
     const fonts = [
       { family: 'Plus Jakarta Sans', file: 'PlusJakartaSans-Regular.ttf', weight: '400' },
@@ -24,16 +29,37 @@ App({
       { family: 'JetBrains Mono', file: 'JetBrainsMono-Regular.ttf', weight: '400' },
       { family: 'JetBrains Mono', file: 'JetBrainsMono-Bold.ttf', weight: '700' }
     ];
-    fonts.forEach(({ family, file, weight }) => {
+    fonts.forEach(({ family, file, weight }) => this.loadLocalFont(family, file, weight));
+  },
+
+  loadLocalFont(family, file, weight) {
+    const fs = wx.getFileSystemManager();
+    const destPath = `${wx.env.USER_DATA_PATH}/${file}`;
+    const register = () => {
       wx.loadFontFace({
         family,
-        source: `url("/fonts/${file}")`,
+        source: `url("${destPath}")`,
         desc: { weight },
         scopes: ['webview', 'native'],
         fail(err) {
           console.warn(`${family} (${weight}) 加载失败，将回退到系统字体`, err);
         }
       });
+    };
+
+    fs.access({
+      path: destPath,
+      success: register,
+      fail: () => {
+        fs.copyFile({
+          srcPath: `/fonts/${file}`,
+          destPath,
+          success: register,
+          fail(err) {
+            console.warn(`拷贝字体文件失败: ${file}`, err);
+          }
+        });
+      }
     });
   }
 });
