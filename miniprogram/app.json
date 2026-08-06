@@ -12,7 +12,7 @@
   "subPackages": [
     {
       "root": "packageExam",
-      "pages": ["pages/flow/flow"]
+      "pages": ["pages/flow/flow", "pages/practice/practice"]
     }
   ],
   "window": {

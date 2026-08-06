@@ -1,16 +1,7 @@
 const store = require('../../../utils/store.js');
 const { EXAM_CONFIG } = require('../../../utils/banks.js');
 const { stripLeadingNumber, shuffle, fmtTime } = require('../../../utils/util.js');
-
-// 静态 require——WeChat 打包器要求分包内引用的文件路径能在编译期确定，
-// 不能用运行时拼出来的 require(`../../data/${key}.json`)。
-const BANKS = {
-  p1: require('../../data/p1.json'),
-  p2: require('../../data/p2.json'),
-  p3: require('../../data/p3.json'),
-  p5: require('../../data/p5.json'),
-  mpf: require('../../data/mpf.json')
-};
+const BANKS = require('../../data/index.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;

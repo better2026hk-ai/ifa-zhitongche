@@ -70,8 +70,7 @@ Page({
   },
 
   onContinue() {
-    // 练习模式是下一步要做的功能，先占位。
-    wx.showToast({ title: '练习模式下一步实现', icon: 'none' });
+    wx.navigateTo({ url: `/packageExam/pages/practice/practice?key=${this.data.currentKey}` });
   },
 
   goProfile() {

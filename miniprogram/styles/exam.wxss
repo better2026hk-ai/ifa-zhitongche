@@ -205,6 +205,29 @@
   height: 26rpx;
 }
 
+/* 练习模式顶栏的"第 X 章"胶囊按钮 */
+.chapter-chip {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 22rpx;
+  padding: 16rpx 22rpx;
+  box-shadow: 0 4rpx 16rpx -8rpx rgba(20, 24, 33, 0.08);
+  font-family: "JetBrains Mono", "SF Mono", monospace;
+  font-weight: 700;
+  font-size: 24rpx;
+  color: var(--green);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.chapter-chip image {
+  width: 24rpx;
+  height: 24rpx;
+}
+
 .exam-progress-row {
   display: flex;
   justify-content: space-between;
