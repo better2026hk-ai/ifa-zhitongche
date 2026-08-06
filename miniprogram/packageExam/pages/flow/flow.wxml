@@ -180,12 +180,7 @@
     <view
       wx:for="{{navCells}}"
       wx:key="index"
-      class="qcell
-        {{!reviewNav && item.answered ? 'answered' : ''}}
-        {{reviewNav && item.state === 'correct' ? 'rev-correct' : ''}}
-        {{reviewNav && item.state === 'wrong' ? 'rev-wrong' : ''}}
-        {{reviewNav && item.state === 'blank' ? 'rev-blank' : ''}}
-        {{item.current ? 'current' : ''}}"
+      class="qcell {{!reviewNav && item.answered ? 'answered' : ''}} {{reviewNav && item.state === 'correct' ? 'rev-correct' : ''}} {{reviewNav && item.state === 'wrong' ? 'rev-wrong' : ''}} {{reviewNav && item.state === 'blank' ? 'rev-blank' : ''}} {{item.current ? 'current' : ''}}"
       data-index="{{item.index}}"
       bindtap="onNavCellTap"
     >{{item.num}}</view>
