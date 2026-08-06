@@ -38,6 +38,9 @@ App({
         source: `url("${data}")`,
         desc: { weight },
         scopes: ['webview', 'native'],
+        success(res) {
+          console.log(`${family} (${weight}) 加载成功`, res);
+        },
         fail(err) {
           console.warn(`${family} (${weight}) 加载失败，将回退到系统字体`, err);
         }
