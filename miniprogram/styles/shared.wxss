@@ -2,11 +2,12 @@
 
 .login-wrap {
   height: 100vh;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 64rpx;
+  padding: env(safe-area-inset-top) 64rpx 0;
   text-align: center;
 }
 
@@ -100,7 +101,8 @@
    模拟考试记录列表、逐题复盘等二级页面都是这个样式 */
 .review-top {
   flex-shrink: 0;
-  padding: 28rpx 40rpx 20rpx;
+  padding: calc(28rpx + env(safe-area-inset-top)) 40rpx 20rpx;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 24rpx;
@@ -117,9 +119,9 @@
   white-space: nowrap;
 }
 
-/* review-top 下面的滚动内容区，高度按"整屏减去顶栏"算 */
+/* review-top 下面的滚动内容区，高度按"整屏减去顶栏（含安全区）"算 */
 .exam-content {
-  height: calc(100vh - 120rpx);
+  height: calc(100vh - 120rpx - env(safe-area-inset-top));
   padding: 16rpx 40rpx 32rpx;
   box-sizing: border-box;
 }

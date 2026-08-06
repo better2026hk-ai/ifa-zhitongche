@@ -1,11 +1,12 @@
 .placeholder-wrap {
   height: 100vh;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 28rpx;
-  padding: 0 80rpx 200rpx;
+  padding: env(safe-area-inset-top) 80rpx 200rpx;
   text-align: center;
 }
 
