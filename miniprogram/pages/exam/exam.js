@@ -14,7 +14,7 @@ Page({
       return;
     }
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 1 });
+      this.getTabBar().setData({ selected: 1, hidden: false });
     }
     this.setData({ statusBarHeight: getStatusBarHeight() });
   },

@@ -27,6 +27,11 @@ const TABS = [
 Component({
   data: {
     selected: 0,
+    // 错题本的详情/选题/测验这几个子屏幕跟"首页/tab 页"是同一个路由，不像模拟
+    // 考试/练习模式那样天然在没有 tabBar 的分包页面里，得靠页面自己调用
+    // getTabBar().setData({hidden:true}) 手动隐藏，不然子屏幕自己的底部按钮
+    // 会被 tabBar 挡住。
+    hidden: false,
     tabs: TABS.map((t) => ({
       ...t,
       iconInactive: iconSvg(ICON_PATHS[t.key], INACTIVE_COLOR),

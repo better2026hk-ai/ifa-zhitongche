@@ -50,7 +50,17 @@ Page({
       this.getTabBar().setData({ selected: 2 });
     }
     this.setData({ screen: 'list', statusBarHeight: getStatusBarHeight() });
+    this.syncTabBarVisibility();
     this.refreshList();
+  },
+
+  // 详情/选题/测验这几个子屏幕跟列表页是同一个 tab 路由，不像模拟考试/练习
+  // 模式那样天然没有 tabBar；这几个屏幕自己有底部按钮，得手动把 tabBar 藏起来，
+  // 不然会被挡住点不到（错题本详情页的"组一次错题测验"就是这么被挡住的）。
+  syncTabBarVisibility() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ hidden: this.data.screen !== 'list' });
+    }
   },
 
   refreshList() {
@@ -62,6 +72,7 @@ Page({
     this.selectedPaper = key;
     this.expandedKey = null;
     this.setData({ screen: 'detail', selectedPaper: key, paperTitle: store.getPaperMeta(key).title });
+    this.syncTabBarVisibility();
     this.refreshDetail();
   },
 
@@ -83,6 +94,7 @@ Page({
 
   backToList() {
     this.setData({ screen: 'list' });
+    this.syncTabBarVisibility();
     this.refreshList();
   },
 
@@ -90,6 +102,7 @@ Page({
   goToSelect() {
     this.selectedSet = new Set(store.getWrongBookForPaper(this.selectedPaper).map((w) => w.key));
     this.setData({ screen: 'select' });
+    this.syncTabBarVisibility();
     this.refreshSelect();
   },
 
@@ -122,6 +135,7 @@ Page({
 
   backToDetail() {
     this.setData({ screen: 'detail' });
+    this.syncTabBarVisibility();
     this.refreshDetail();
   },
 
@@ -140,6 +154,7 @@ Page({
       quizAnswered: false,
       quizPicked: null
     });
+    this.syncTabBarVisibility();
     this.updateQuizView();
   },
 
@@ -182,6 +197,7 @@ Page({
 
   backToDetailFromDone() {
     this.setData({ screen: 'detail' });
+    this.syncTabBarVisibility();
     this.refreshDetail();
   }
 });
