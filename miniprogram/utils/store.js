@@ -11,7 +11,7 @@
 // 换成了 HTTP 调 Edge Function。
 
 const { HOME_BANKS } = require('./banks.js');
-const { API_BASE } = require('./api-config.js');
+const { API_BASE, ANON_KEY } = require('./api-config.js');
 
 const KEYS = {
   LOGGED_IN: 'ifa_logged_in', // 本机开关：这台设备是否已同意协议并点过登录，跟云端资料无关，不跨设备
@@ -67,6 +67,9 @@ function callApi(action, payload) {
     wx.request({
       url: API_BASE,
       method: 'POST',
+      // Authorization 头是过 Supabase 网关那一层要用的 anon key，跟下面
+      // data 里的 token（我们自己签的登录凭证）是两层完全独立的校验。
+      header: { Authorization: `Bearer ${ANON_KEY}` },
       data: Object.assign({ action, token: getSessionToken() }, payload || {}),
       success(res) {
         if (res.data && res.data.ok) {
