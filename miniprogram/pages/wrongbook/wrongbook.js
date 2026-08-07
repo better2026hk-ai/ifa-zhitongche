@@ -183,11 +183,8 @@ Page({
     const q = this.quizQueue[this.quizIndex];
     const isCorrect = letter === q.answer;
     const toastFail = () => wx.showToast({ title: '网络异常，请重试', icon: 'none' });
-    store.recordAnswerStat(q.paperKey, isCorrect).catch(toastFail);
-    if (isCorrect) {
-      this.quizCorrectCount++;
-      store.removeWrongBookEntry(q.key).catch(toastFail);
-    }
+    store.answerQuestion(q.paperKey, q, letter).catch(toastFail);
+    if (isCorrect) this.quizCorrectCount++;
     this.setData({
       quizAnswered: true,
       quizPicked: letter,

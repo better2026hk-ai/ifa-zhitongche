@@ -1,5 +1,5 @@
 const store = require('../../utils/store.js');
-const { suggestNickname, getStatusBarHeight } = require('../../utils/util.js');
+const { suggestNickname, getStatusBarHeight, wxLoginAsync } = require('../../utils/util.js');
 
 // Same WeChat-bubble glyph used in the HTML prototype's login button, baked
 // as a white-fill data URI so no extra image asset is needed.
@@ -32,15 +32,16 @@ Page({
     }
   },
 
-  // 云开发直连数据库不需要拿 wx.login() 的 code 换 openid（小程序运行时里调用
-  // 云数据库/serverDate 本来就带着当前微信登录身份），点击按钮后直接走本机
-  // 登录开关 + 查一次云端资料。
+  // Supabase 不认识微信身份，要靠 wx.login() 的 code 在服务端换 openid——
+  // 这一步是这次接 Supabase 才重新需要的（跟微信云开发不一样，云开发直连
+  // 数据库时这一步是多余的）。
   async handleLogin() {
     this.setData({ loggingIn: true });
     try {
+      const { code } = await wxLoginAsync();
+      const user = await store.login(code);
       store.setLoggedIn(true);
-      const hasProfile = await store.hasProfile();
-      if (hasProfile) {
+      if (user && user.nickname) {
         // 老用户重新登录（例如退出登录后再登录）：资料还在，直接回首页。
         wx.reLaunch({ url: '/pages/home/home' });
       } else {

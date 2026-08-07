@@ -88,8 +88,7 @@ Page({
     const ch = this.data.chapters[this.data.chapterIdx];
     const q = ch.items[this.data.qIndex];
     const toastFail = () => wx.showToast({ title: '网络异常，请重试', icon: 'none' });
-    store.recordAnswerStat(this.data.paperKey, letter === q.answer).catch(toastFail);
-    store.updateWrongBookOnAnswer(this.data.paperKey, q, letter).catch(toastFail);
+    store.answerQuestion(this.data.paperKey, q, letter).catch(toastFail);
     this.setData({ answered: true, picked: letter });
   },
 

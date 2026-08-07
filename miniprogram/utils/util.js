@@ -39,4 +39,10 @@ function getStatusBarHeight() {
   }
 }
 
-module.exports = { suggestNickname, stripLeadingNumber, shuffle, fmtTime, getStatusBarHeight };
+function wxLoginAsync() {
+  return new Promise((resolve, reject) => {
+    wx.login({ success: resolve, fail: reject });
+  });
+}
+
+module.exports = { suggestNickname, stripLeadingNumber, shuffle, fmtTime, getStatusBarHeight, wxLoginAsync };

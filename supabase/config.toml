@@ -1,0 +1,4 @@
+[functions.api]
+# 认证逻辑自己在函数里做（校验我们自己签发的 token），不需要小程序客户端
+# 带 Supabase 的 anon key，所以关掉平台自带的 JWT 校验。
+verify_jwt = false
