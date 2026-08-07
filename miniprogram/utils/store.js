@@ -181,6 +181,22 @@ function computeOverviewStats(user, examHistory, wrongCount) {
 }
 
 /* ============================================================
+   题库 —— questions 表。原来打包进 packageExam/data 的 5 份 json 太大，
+   分包超过了 2MB 的限制，改成按需从服务端拉取。
+============================================================ */
+
+// 章节练习模式要整份卷子（按章节浏览），一次性拉全量。
+async function fetchPracticeQuestions(paperKey) {
+  return callApi('fetchPracticeQuestions', { paperKey });
+}
+
+// 模拟考试只要随机抽 count 题——抽样在服务端做（数据库同一网络内），
+// 小程序端不用拉整份题库回来再洗牌。
+async function fetchExamQuestions(paperKey, count) {
+  return callApi('fetchExamQuestions', { paperKey, count });
+}
+
+/* ============================================================
    单题作答 —— 练习模式 / 错题本测验共用，一次请求同时处理统计 + 错题本增删
 ============================================================ */
 
@@ -301,6 +317,8 @@ module.exports = {
   hasProfile,
   saveProfile,
   getOrCreateAccountId,
+  fetchPracticeQuestions,
+  fetchExamQuestions,
   answerQuestion,
   getBankStats,
   generateBankDesc,

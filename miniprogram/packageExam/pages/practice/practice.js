@@ -1,13 +1,12 @@
 const store = require('../../../utils/store.js');
 const { getStatusBarHeight } = require('../../../utils/util.js');
-const BANKS = require('../../data/index.js');
 
 const CN_ORDER = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10 };
 
 function groupByChapter(questions) {
   const map = new Map();
   questions.forEach((q) => {
-    if (!map.has(q.chapter)) map.set(q.chapter, { chapter: q.chapter, title: q.chapter_title, items: [] });
+    if (!map.has(q.chapter)) map.set(q.chapter, { chapter: q.chapter, title: q.chapterTitle, items: [] });
     map.get(q.chapter).items.push(q);
   });
   return Array.from(map.values()).sort((a, b) => CN_ORDER[a.chapter] - CN_ORDER[b.chapter]);
@@ -55,7 +54,18 @@ Page({
     }
     this.setData({ statusBarHeight: getStatusBarHeight() });
     const key = options.key;
-    const chapters = groupByChapter(BANKS[key]);
+    wx.showLoading({ title: '加载题库中', mask: true });
+    let questions;
+    try {
+      questions = await store.fetchPracticeQuestions(key);
+    } catch (e) {
+      wx.hideLoading();
+      wx.showToast({ title: '题库加载失败，请重试', icon: 'none' });
+      wx.navigateBack();
+      return;
+    }
+    wx.hideLoading();
+    const chapters = groupByChapter(questions);
     this.setData({
       paperKey: key,
       paperMeta: store.getPaperMeta(key),

@@ -1,7 +1,6 @@
 const store = require('../../../utils/store.js');
 const { EXAM_CONFIG } = require('../../../utils/banks.js');
-const { stripLeadingNumber, shuffle, fmtTime, getStatusBarHeight } = require('../../../utils/util.js');
-const BANKS = require('../../data/index.js');
+const { stripLeadingNumber, fmtTime, getStatusBarHeight } = require('../../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -116,11 +115,20 @@ Page({
   },
 
   /* ---- start ---- */
-  startExam() {
+  async startExam() {
     const key = this.data.paperKey;
     const config = EXAM_CONFIG[key];
-    const pool = shuffle(BANKS[key]);
-    const questions = withDisplayStem(pool.slice(0, config.totalQuestions));
+    wx.showLoading({ title: '抽题中', mask: true });
+    let pool;
+    try {
+      pool = await store.fetchExamQuestions(key, config.totalQuestions);
+    } catch (e) {
+      wx.hideLoading();
+      wx.showToast({ title: '抽题失败，请重试', icon: 'none' });
+      return;
+    }
+    wx.hideLoading();
+    const questions = withDisplayStem(pool);
     this.setData({
       config,
       questions,

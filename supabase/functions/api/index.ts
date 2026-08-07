@@ -93,6 +93,15 @@ function hashDedupeKey(paperKey: string, stem: string): string {
   return `${paperKey}_${(h >>> 0).toString(36)}`;
 }
 
+function shuffleArray<T>(arr: T[]): T[] {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function dateKey(d: Date): string {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
@@ -194,6 +203,26 @@ Deno.serve(async (req) => {
         const { data, error } = await db.from("users").update(patch).eq("openid", openid).select("*").single();
         if (error) throw error;
         return ok(data);
+      }
+
+      case "fetchPracticeQuestions": {
+        // 章节练习模式要按章节浏览整份题库，一次性把这份卷子全量返回，
+        // 按 idx 排好序（章节内"N. "编号就是靠这个顺序对上的）。
+        const { data, error } = await db
+          .from("questions")
+          .select("*")
+          .eq("paperKey", body.paperKey)
+          .order("idx", { ascending: true });
+        if (error) throw error;
+        return ok(data);
+      }
+
+      case "fetchExamQuestions": {
+        // 模拟考试只需要随机抽 N 题——在这边（数据库同一网络内）取整份卷子
+        // 再洗牌切片，客户端只收到抽中的这些题，不用把整份题库传给小程序。
+        const { data, error } = await db.from("questions").select("*").eq("paperKey", body.paperKey);
+        if (error) throw error;
+        return ok(shuffleArray(data).slice(0, body.count));
       }
 
       case "answerQuestion": {
