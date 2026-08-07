@@ -58,7 +58,7 @@
       wx:key="key"
       class="paper-card {{item.key === current.key ? 'active' : ''}}"
       data-key="{{item.key}}"
-      bindtap="onSelectBank"
+      bindtap="onOpenBank"
     >
       <view class="paper-icon">{{item.tag}}</view>
       <view class="paper-mid">

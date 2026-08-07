@@ -72,6 +72,15 @@ Page({
     this.refresh();
   },
 
+  // "我的题库"列表里的卡片——点击直接进对应题库的练习模式，
+  // 跟"切换题库"面板（只换仪表盘显示）分开处理。
+  onOpenBank(e) {
+    const key = e.currentTarget.dataset.key;
+    this.setData({ currentKey: key });
+    this.refresh();
+    wx.navigateTo({ url: `/packageExam/pages/practice/practice?key=${key}` });
+  },
+
   onContinue() {
     wx.navigateTo({ url: `/packageExam/pages/practice/practice?key=${this.data.currentKey}` });
   },
