@@ -1,5 +1,5 @@
 const store = require('../../../utils/store.js');
-const { stripLeadingNumber, getStatusBarHeight } = require('../../../utils/util.js');
+const { getStatusBarHeight } = require('../../../utils/util.js');
 const BANKS = require('../../data/index.js');
 
 const CN_ORDER = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10 };
@@ -77,7 +77,9 @@ Page({
       currentChapterTitle: ch.title,
       currentChapterNum: ch.chapter,
       chapterTotal: ch.items.length,
-      currentQuestion: Object.assign({}, q, { displayStem: stripLeadingNumber(q.stem) }),
+      // 练习模式按章节顺序作答，原编号（"N. "）有意义要保留——只有跨章节
+      // 随机抽题的模拟考试/错题本测验才需要去掉（文档 5.5 节）。
+      currentQuestion: Object.assign({}, q, { displayStem: q.stem }),
       progressPct: Math.round(((qIndex + 1) / ch.items.length) * 100)
     });
   },
