@@ -69,14 +69,15 @@ Page({
     statusBarHeight: 24
   },
 
-  onLoad(options) {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onLoad(options) {
+    if (!store.isLoggedIn() || !(await store.hasProfile())) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
     this.setData({ statusBarHeight: getStatusBarHeight() });
     if (options.mode === 'history') {
-      const entry = store.getExamHistoryEntry(Number(options.historyIndex));
+      const history = await store.fetchExamHistory();
+      const entry = store.getExamHistoryEntry(history, Number(options.historyIndex));
       if (!entry) {
         wx.showToast({ title: '记录不存在', icon: 'none' });
         wx.navigateBack();
@@ -221,30 +222,15 @@ Page({
 
   finishExam() {
     if (this.timerHandle) clearInterval(this.timerHandle);
-    const { questions, answers, paperKey } = this.data;
-    questions.forEach((q, i) => {
-      const picked = answers[i];
-      if (picked) store.recordAnswerStat(paperKey, picked === q.answer);
-      store.updateWrongBookOnAnswer(paperKey, q, picked);
-    });
+    const { questions, answers, paperKey, config, paperMeta } = this.data;
 
-    const correct = questions.filter((q, i) => answers[i] === q.answer).length;
-    const config = this.data.config;
-    const passed = correct >= config.passCount;
-    const paperMeta = this.data.paperMeta;
-
-    store.addExamHistory({
-      paperKey,
+    // 写云端（聚合统计 + 并发处理错题本 + 一条考试记录）不阻塞切到结果页——
+    // 分数是本地算好的，不依赖这几次云端写入是否已经落地。
+    store.recordExamResult(paperKey, questions, answers, {
       paperTag: paperMeta.tag,
       paperName: paperMeta.title,
-      config,
-      questions,
-      answers: Object.assign({}, answers),
-      total: questions.length,
-      correct,
-      passed,
-      timestamp: Date.now()
-    });
+      config
+    }).catch(() => wx.showToast({ title: '网络异常，本次成绩可能未同步', icon: 'none' }));
 
     this.setData({ phase: 'result', confirmVisible: false });
     this.refreshResult();

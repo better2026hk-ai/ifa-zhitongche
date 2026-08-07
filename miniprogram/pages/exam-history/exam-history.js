@@ -21,13 +21,14 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onShow() {
+    if (!store.isLoggedIn() || !(await store.hasProfile())) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
     // 最多显示近 20 次——技术交接文档 4.6 节
-    const items = store.getExamHistory().slice(0, 20).map((h) => ({
+    const history = await store.fetchExamHistory();
+    const items = history.slice(0, 20).map((h) => ({
       paperTag: h.paperTag,
       paperName: h.paperName,
       passed: h.passed,

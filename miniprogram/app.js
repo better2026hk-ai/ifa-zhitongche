@@ -9,7 +9,9 @@ App({
   },
 
   onLaunch() {
-    // TODO: once 云开发 is provisioned, call wx.cloud.init() here.
+    if (wx.cloud) {
+      wx.cloud.init({ traceUser: true });
+    }
     this.loadCustomFonts();
   },
 

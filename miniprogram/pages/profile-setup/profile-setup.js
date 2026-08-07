@@ -16,11 +16,11 @@ Page({
     statusBarHeight: 24
   },
 
-  onLoad(options) {
+  async onLoad(options) {
     this.setData({ statusBarHeight: getStatusBarHeight() });
     const isEdit = options.mode === 'edit';
     if (isEdit) {
-      const profile = store.getProfile() || {};
+      const profile = (await store.fetchUserDoc()) || {};
       this.setData({
         isEdit: true,
         avatarUrl: profile.avatarUrl || '',
@@ -49,10 +49,15 @@ Page({
     wx.navigateBack();
   },
 
-  handleConfirm() {
+  async handleConfirm() {
     let nickname = this.data.nickname.trim();
     if (!nickname) nickname = suggestNickname();
-    store.setProfile({ nickname, avatarUrl: this.data.avatarUrl });
+    try {
+      await store.saveProfile({ nickname, avatarUrl: this.data.avatarUrl });
+    } catch (e) {
+      wx.showToast({ title: '保存失败，请重试', icon: 'none' });
+      return;
+    }
 
     if (this.data.isEdit) {
       wx.navigateBack();

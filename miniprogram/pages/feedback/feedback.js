@@ -28,8 +28,8 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onShow() {
+    if (!store.isLoggedIn() || !(await store.hasProfile())) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
@@ -44,9 +44,13 @@ Page({
     this.setData({ text: e.detail.value.slice(0, 100) });
   },
 
-  submit() {
-    store.submitFeedback(this.data.rating, this.data.text);
-    this.setData({ submitted: true });
+  async submit() {
+    try {
+      await store.submitFeedback(this.data.rating, this.data.text);
+      this.setData({ submitted: true });
+    } catch (e) {
+      wx.showToast({ title: '提交失败，请重试', icon: 'none' });
+    }
   },
 
   goBack() {

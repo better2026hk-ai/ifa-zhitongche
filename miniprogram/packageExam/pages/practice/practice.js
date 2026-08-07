@@ -48,8 +48,8 @@ Page({
     statusBarHeight: 24
   },
 
-  onLoad(options) {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onLoad(options) {
+    if (!store.isLoggedIn() || !(await store.hasProfile())) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
@@ -87,8 +87,9 @@ Page({
     const letter = e.currentTarget.dataset.letter;
     const ch = this.data.chapters[this.data.chapterIdx];
     const q = ch.items[this.data.qIndex];
-    store.recordAnswerStat(this.data.paperKey, letter === q.answer);
-    store.updateWrongBookOnAnswer(this.data.paperKey, q, letter);
+    const toastFail = () => wx.showToast({ title: '网络异常，请重试', icon: 'none' });
+    store.recordAnswerStat(this.data.paperKey, letter === q.answer).catch(toastFail);
+    store.updateWrongBookOnAnswer(this.data.paperKey, q, letter).catch(toastFail);
     this.setData({ answered: true, picked: letter });
   },
 

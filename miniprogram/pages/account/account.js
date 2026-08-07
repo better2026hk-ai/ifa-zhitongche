@@ -24,18 +24,21 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onShow() {
+    if (!store.isLoggedIn()) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
-    const profile = store.getProfile();
-    const firstLoginAt = store.getFirstLoginAt();
+    const user = await store.fetchUserDoc();
+    if (!user || !user.nickname) {
+      wx.reLaunch({ url: '/pages/login/login' });
+      return;
+    }
     this.setData({
-      nickname: profile.nickname,
-      avatarUrl: profile.avatarUrl || '',
-      accountId: store.getOrCreateAccountId(),
-      registeredAt: firstLoginAt ? fmtDate(firstLoginAt) : '—',
+      nickname: user.nickname,
+      avatarUrl: user.avatarUrl || '',
+      accountId: user.accountId,
+      registeredAt: user.firstLoginAt ? fmtDate(new Date(user.firstLoginAt).getTime()) : '—',
       statusBarHeight: getStatusBarHeight()
     });
   },

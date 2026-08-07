@@ -41,8 +41,8 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onShow() {
+    if (!store.isLoggedIn() || !(await store.hasProfile())) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
@@ -63,21 +63,31 @@ Page({
     }
   },
 
-  refreshList() {
-    this.setData({ grouped: store.getWrongBookGrouped() });
+  async refreshList() {
+    const list = await store.fetchWrongBook();
+    this.setData({ grouped: store.getWrongBookGrouped(list) });
   },
 
-  openPaper(e) {
+  async openPaper(e) {
     const key = e.currentTarget.dataset.key;
     this.selectedPaper = key;
     this.expandedKey = null;
     this.setData({ screen: 'detail', selectedPaper: key, paperTitle: store.getPaperMeta(key).title });
     this.syncTabBarVisibility();
-    this.refreshDetail();
+    await this.refreshDetail();
   },
 
-  refreshDetail() {
-    const items = store.getWrongBookForPaper(this.selectedPaper).map((w) =>
+  // 详情/选题这两屏进入时各拉一次全量列表并按科目筛出来缓存在 this._detailItems /
+  // this._selectFiltered 上——同一屏内展开/勾选这类高频交互直接用缓存同步渲染，
+  // 不用每点一次都发一次网络请求；离开这两屏（返回列表/交完测验）会重新拉一次。
+  async refreshDetail() {
+    const list = await store.fetchWrongBook();
+    this._detailItems = store.getWrongBookForPaper(list, this.selectedPaper);
+    this.renderDetail();
+  },
+
+  renderDetail() {
+    const items = this._detailItems.map((w) =>
       Object.assign({}, w, {
         displayStem: stripLeadingNumber(w.stem),
         expanded: w.key === this.expandedKey
@@ -89,7 +99,7 @@ Page({
   toggleDetail(e) {
     const key = e.currentTarget.dataset.key;
     this.expandedKey = this.expandedKey === key ? null : key;
-    this.refreshDetail();
+    this.renderDetail();
   },
 
   backToList() {
@@ -99,15 +109,17 @@ Page({
   },
 
   /* ---- select ---- */
-  goToSelect() {
-    this.selectedSet = new Set(store.getWrongBookForPaper(this.selectedPaper).map((w) => w.key));
+  async goToSelect() {
+    const list = await store.fetchWrongBook();
+    this._selectFiltered = store.getWrongBookForPaper(list, this.selectedPaper);
+    this.selectedSet = new Set(this._selectFiltered.map((w) => w.key));
     this.setData({ screen: 'select' });
     this.syncTabBarVisibility();
     this.refreshSelect();
   },
 
   refreshSelect() {
-    const filtered = store.getWrongBookForPaper(this.selectedPaper);
+    const filtered = this._selectFiltered;
     const selectItems = filtered.map((w) =>
       Object.assign({}, w, {
         displayStem: stripLeadingNumber(w.stem),
@@ -126,7 +138,7 @@ Page({
   },
 
   toggleSelectAll() {
-    const filtered = store.getWrongBookForPaper(this.selectedPaper);
+    const filtered = this._selectFiltered;
     const allChecked = filtered.length > 0 && filtered.every((w) => this.selectedSet.has(w.key));
     if (allChecked) filtered.forEach((w) => this.selectedSet.delete(w.key));
     else filtered.forEach((w) => this.selectedSet.add(w.key));
@@ -142,7 +154,7 @@ Page({
   /* ---- quiz：跟练习模式一样即时反馈，答对立刻从错题本移除 ---- */
   startQuiz() {
     if (this.selectedSet.size === 0) return;
-    const all = store.getWrongBook().filter((w) => this.selectedSet.has(w.key));
+    const all = this._selectFiltered.filter((w) => this.selectedSet.has(w.key));
     this.quizQueue = shuffle(all).map((w) => Object.assign({}, w, { displayStem: stripLeadingNumber(w.stem) }));
     this.quizIndex = 0;
     this.quizCorrectCount = 0;
@@ -170,10 +182,11 @@ Page({
     const letter = e.currentTarget.dataset.letter;
     const q = this.quizQueue[this.quizIndex];
     const isCorrect = letter === q.answer;
-    store.recordAnswerStat(q.paperKey, isCorrect);
+    const toastFail = () => wx.showToast({ title: '网络异常，请重试', icon: 'none' });
+    store.recordAnswerStat(q.paperKey, isCorrect).catch(toastFail);
     if (isCorrect) {
       this.quizCorrectCount++;
-      store.removeWrongBookEntry(q.key);
+      store.removeWrongBookEntry(q.key).catch(toastFail);
     }
     this.setData({
       quizAnswered: true,

@@ -39,8 +39,13 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onShow() {
+    if (!store.isLoggedIn()) {
+      wx.reLaunch({ url: '/pages/login/login' });
+      return;
+    }
+    const user = await store.fetchUserDoc();
+    if (!user || !user.nickname) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
@@ -48,8 +53,7 @@ Page({
       this.getTabBar().setData({ selected: 3, hidden: false });
     }
     this.setData({ statusBarHeight: getStatusBarHeight() });
-    const profile = store.getProfile();
-    const history = store.getExamHistory();
+    const [history, wrongCount] = await Promise.all([store.fetchExamHistory(), store.countWrongBook()]);
     const historyPreview = history.slice(0, 3).map((h) => ({
       paperTag: h.paperTag,
       paperName: h.paperName,
@@ -58,10 +62,10 @@ Page({
       pct: h.total > 0 ? Math.round((h.correct / h.total) * 100) : 0
     }));
     this.setData({
-      nickname: profile.nickname,
-      avatarUrl: profile.avatarUrl || '',
-      days: store.daysSinceFirstLogin(),
-      overview: store.computeOverviewStats(),
+      nickname: user.nickname,
+      avatarUrl: user.avatarUrl || '',
+      days: store.daysSinceFirstLogin(user),
+      overview: store.computeOverviewStats(user, history, wrongCount),
       historyPreview,
       historyCountLabel: Math.min(history.length, 20)
     });

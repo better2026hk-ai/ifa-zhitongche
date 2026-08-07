@@ -26,33 +26,38 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onShow() {
+    if (!store.isLoggedIn()) {
+      wx.reLaunch({ url: '/pages/login/login' });
+      return;
+    }
+    const user = await store.fetchUserDoc();
+    if (!user || !user.nickname) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0, hidden: false });
     }
+    this._user = user;
     this.setData({ statusBarHeight: getStatusBarHeight() });
-    this.refresh();
+    this.refresh(user);
   },
 
-  refresh() {
-    const profile = store.getProfile();
+  refresh(user) {
     const banks = HOME_BANKS.map((bank) => {
-      const st = store.getBankStats(bank);
+      const st = store.getBankStats(user, bank);
       const pct = bank.total > 0 ? Math.round((st.done / bank.total) * 100) : 0;
       return { ...bank, done: st.done, acc: st.acc, pct };
     });
     const current = banks.find((b) => b.key === this.data.currentKey) || banks[0];
     const currentBank = HOME_BANKS.find((b) => b.key === current.key);
-    current.desc = store.generateBankDesc(currentBank);
+    current.desc = store.generateBankDesc(user, currentBank);
 
     this.setData({
-      nickname: profile.nickname,
-      avatarUrl: profile.avatarUrl || '',
-      days: store.daysSinceFirstLogin(),
+      nickname: user.nickname,
+      avatarUrl: user.avatarUrl || '',
+      days: store.daysSinceFirstLogin(user),
       banks,
       current
     });
@@ -69,7 +74,7 @@ Page({
   onSelectBank(e) {
     const key = e.currentTarget.dataset.key;
     this.setData({ currentKey: key, sheetVisible: false });
-    this.refresh();
+    this.refresh(this._user);
   },
 
   // "我的题库"列表里的卡片——点击直接进对应题库的练习模式，
@@ -77,7 +82,7 @@ Page({
   onOpenBank(e) {
     const key = e.currentTarget.dataset.key;
     this.setData({ currentKey: key });
-    this.refresh();
+    this.refresh(this._user);
     wx.navigateTo({ url: `/packageExam/pages/practice/practice?key=${key}` });
   },
 

@@ -19,37 +19,38 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
+  async onShow() {
     this.setData({ statusBarHeight: getStatusBarHeight() });
     // Already fully set up (e.g. user tapped back into this page) — skip
     // straight past the screens they've already completed.
-    if (store.isLoggedIn() && store.hasProfile()) {
+    if (!store.isLoggedIn()) return;
+    const hasProfile = await store.hasProfile();
+    if (hasProfile) {
       wx.reLaunch({ url: '/pages/home/home' });
-    } else if (store.isLoggedIn() && !store.hasProfile()) {
+    } else {
       wx.redirectTo({ url: '/pages/profile-setup/profile-setup' });
     }
   },
 
-  handleLogin() {
+  // 云开发直连数据库不需要拿 wx.login() 的 code 换 openid（小程序运行时里调用
+  // 云数据库/serverDate 本来就带着当前微信登录身份），点击按钮后直接走本机
+  // 登录开关 + 查一次云端资料。
+  async handleLogin() {
     this.setData({ loggingIn: true });
-    wx.login({
-      success: () => {
-        // TODO: send res.code to a 云函数 to exchange for openid + session,
-        // then persist that session instead of just a local flag.
-        store.setLoggedIn(true);
-        if (store.hasProfile()) {
-          // 老用户重新登录（例如退出登录后再登录）：资料还在，直接回首页。
-          wx.reLaunch({ url: '/pages/home/home' });
-        } else {
-          getApp().globalData.suggestedNickname = suggestNickname();
-          wx.redirectTo({ url: '/pages/profile-setup/profile-setup' });
-        }
-      },
-      fail: () => {
-        this.setData({ loggingIn: false });
-        wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+    try {
+      store.setLoggedIn(true);
+      const hasProfile = await store.hasProfile();
+      if (hasProfile) {
+        // 老用户重新登录（例如退出登录后再登录）：资料还在，直接回首页。
+        wx.reLaunch({ url: '/pages/home/home' });
+      } else {
+        getApp().globalData.suggestedNickname = suggestNickname();
+        wx.redirectTo({ url: '/pages/profile-setup/profile-setup' });
       }
-    });
+    } catch (e) {
+      this.setData({ loggingIn: false });
+      wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+    }
   },
 
   viewTerms() {

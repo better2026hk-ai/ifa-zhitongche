@@ -8,8 +8,13 @@ Page({
     statusBarHeight: 24
   },
 
-  onShow() {
-    if (!store.isLoggedIn() || !store.hasProfile()) {
+  async onShow() {
+    if (!store.isLoggedIn()) {
+      wx.reLaunch({ url: '/pages/login/login' });
+      return;
+    }
+    const hasProfile = await store.hasProfile();
+    if (!hasProfile) {
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
