@@ -1,4 +1,5 @@
 const store = require('../../utils/store.js');
+const { getStatusBarHeight } = require('../../utils/util.js');
 
 const BACK_ICON = `data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">' +
@@ -16,7 +17,8 @@ function formatDate(timestamp) {
 Page({
   data: {
     backIcon: BACK_ICON,
-    items: []
+    items: [],
+    statusBarHeight: 24
   },
 
   onShow() {
@@ -32,7 +34,7 @@ Page({
       dateStr: formatDate(h.timestamp),
       pct: h.total > 0 ? Math.round((h.correct / h.total) * 100) : 0
     }));
-    this.setData({ items });
+    this.setData({ items, statusBarHeight: getStatusBarHeight() });
   },
 
   onOpenHistory(e) {

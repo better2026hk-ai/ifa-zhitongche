@@ -1,4 +1,4 @@
-<scroll-view class="home-scroll" scroll-y="true">
+<scroll-view class="home-scroll" scroll-y="true" style="padding-top:calc({{statusBarHeight}}px + 12rpx);">
   <view class="profile-header">
     <view class="profile-avatar-lg">
       <image wx:if="{{avatarUrl}}" class="profile-avatar-img" src="{{avatarUrl}}" mode="aspectFill" />

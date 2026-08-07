@@ -1,6 +1,6 @@
 const store = require('../../../utils/store.js');
 const { EXAM_CONFIG } = require('../../../utils/banks.js');
-const { stripLeadingNumber, shuffle, fmtTime } = require('../../../utils/util.js');
+const { stripLeadingNumber, shuffle, fmtTime, getStatusBarHeight } = require('../../../utils/util.js');
 const BANKS = require('../../data/index.js');
 
 function svgIcon(paths, color) {
@@ -65,7 +65,8 @@ Page({
     resultBadgeText: '',
     resultTitle: '',
     resultDesc: '',
-    icons: ICONS
+    icons: ICONS,
+    statusBarHeight: 24
   },
 
   onLoad(options) {
@@ -73,6 +74,7 @@ Page({
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
+    this.setData({ statusBarHeight: getStatusBarHeight() });
     if (options.mode === 'history') {
       const entry = store.getExamHistoryEntry(Number(options.historyIndex));
       if (!entry) {

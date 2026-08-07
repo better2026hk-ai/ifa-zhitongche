@@ -1,4 +1,5 @@
 const store = require('../../utils/store.js');
+const { getStatusBarHeight } = require('../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -19,13 +20,16 @@ const ICONS = {
 Page({
   data: {
     backIcon: BACK_ICON,
-    icons: ICONS
+    icons: ICONS,
+    statusBarHeight: 24
   },
 
   onShow() {
     if (!store.isLoggedIn() || !store.hasProfile()) {
       wx.reLaunch({ url: '/pages/login/login' });
+      return;
     }
+    this.setData({ statusBarHeight: getStatusBarHeight() });
   },
 
   goBack() {

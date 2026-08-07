@@ -1,4 +1,5 @@
 const store = require('../../utils/store.js');
+const { getStatusBarHeight } = require('../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -34,7 +35,8 @@ Page({
     editIcon: EDIT_ICON,
     logoutIcon: LOGOUT_ICON,
     arrowIcon: ARROW_ICON,
-    icons: ICONS
+    icons: ICONS,
+    statusBarHeight: 24
   },
 
   onShow() {
@@ -45,6 +47,7 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 3 });
     }
+    this.setData({ statusBarHeight: getStatusBarHeight() });
     const profile = store.getProfile();
     const history = store.getExamHistory();
     const historyPreview = history.slice(0, 3).map((h) => ({

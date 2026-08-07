@@ -1,9 +1,11 @@
 const store = require('../../utils/store.js');
 const { HOME_BANKS, EXAM_CONFIG } = require('../../utils/banks.js');
+const { getStatusBarHeight } = require('../../utils/util.js');
 
 Page({
   data: {
-    papers: HOME_BANKS.map((b) => Object.assign({ key: b.key, tag: b.tag, title: b.title }, EXAM_CONFIG[b.key]))
+    papers: HOME_BANKS.map((b) => Object.assign({ key: b.key, tag: b.tag, title: b.title }, EXAM_CONFIG[b.key])),
+    statusBarHeight: 24
   },
 
   onShow() {
@@ -14,6 +16,7 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 1 });
     }
+    this.setData({ statusBarHeight: getStatusBarHeight() });
   },
 
   onSelectExam(e) {

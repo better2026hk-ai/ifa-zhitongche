@@ -1,5 +1,5 @@
 const store = require('../../utils/store.js');
-const { suggestNickname } = require('../../utils/util.js');
+const { suggestNickname, getStatusBarHeight } = require('../../utils/util.js');
 
 // Same WeChat-bubble glyph used in the HTML prototype's login button, baked
 // as a white-fill data URI so no extra image asset is needed.
@@ -15,10 +15,12 @@ const WX_ICON = `data:image/svg+xml,${encodeURIComponent(
 Page({
   data: {
     wxIcon: WX_ICON,
-    loggingIn: false
+    loggingIn: false,
+    statusBarHeight: 24
   },
 
   onShow() {
+    this.setData({ statusBarHeight: getStatusBarHeight() });
     // Already fully set up (e.g. user tapped back into this page) — skip
     // straight past the screens they've already completed.
     if (store.isLoggedIn() && store.hasProfile()) {

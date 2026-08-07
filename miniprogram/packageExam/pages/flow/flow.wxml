@@ -1,5 +1,5 @@
 <!-- ================= 开考规则页 ================= -->
-<view wx:if="{{phase === 'start'}}" class="start-wrap">
+<view wx:if="{{phase === 'start'}}" class="start-wrap" style="padding-top:calc({{statusBarHeight}}px + 20rpx);">
   <view class="start-back-row">
     <view class="back-btn" bindtap="goBack">
       <image class="back-ico" src="{{icons.back}}" />
@@ -39,7 +39,7 @@
 
 <!-- ================= 答题页 ================= -->
 <view wx:elif="{{phase === 'exam'}}" class="exam-wrap-flex">
-  <view class="exam-top">
+  <view class="exam-top" style="padding-top:calc({{statusBarHeight}}px + 24rpx);">
     <view class="exam-top-row">
       <view class="exam-name">{{config.name}}</view>
       <view class="top-right-group">
@@ -88,7 +88,7 @@
 </view>
 
 <!-- ================= 出分页 ================= -->
-<view wx:elif="{{phase === 'result'}}" class="result-wrap">
+<view wx:elif="{{phase === 'result'}}" class="result-wrap" style="padding-top:calc({{statusBarHeight}}px + 52rpx);">
   <view class="result-pass-badge {{passed ? 'pass' : 'fail'}}">{{resultBadgeText}}</view>
   <view class="result-ring" style="{{resultRingStyle}}">
     <view class="result-ring-inner">
@@ -114,7 +114,7 @@
 
 <!-- ================= 逐题复盘页 ================= -->
 <view wx:elif="{{phase === 'review'}}" class="exam-wrap-flex">
-  <view class="review-top">
+  <view class="review-top" style="padding-top:calc({{statusBarHeight}}px + 28rpx);">
     <view class="back-btn" bindtap="backToResult">
       <image class="back-ico" src="{{icons.back}}" />
     </view>

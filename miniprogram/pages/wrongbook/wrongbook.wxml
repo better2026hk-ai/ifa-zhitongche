@@ -1,5 +1,5 @@
 <!-- ================= 列表页：科目 + 错题数 ================= -->
-<scroll-view wx:if="{{screen === 'list'}}" class="home-scroll" scroll-y="true">
+<scroll-view wx:if="{{screen === 'list'}}" class="home-scroll" scroll-y="true" style="padding-top:calc({{statusBarHeight}}px + 12rpx);">
   <image class="hero-banner" src="/images/wrongbook-banner.jpg" mode="widthFix" />
   <view wx:if="{{grouped.length === 0}}" class="empty-state">
     <view class="placeholder-ico"><image src="{{icons.emptyBook}}" /></view>
@@ -21,7 +21,7 @@
 
 <!-- ================= 错题详情页 ================= -->
 <view wx:elif="{{screen === 'detail'}}" class="exam-wrap-flex">
-  <view class="review-top">
+  <view class="review-top" style="padding-top:calc({{statusBarHeight}}px + 28rpx);">
     <view class="back-btn" bindtap="backToList">
       <image class="back-ico" src="{{icons.back}}" />
     </view>
@@ -67,7 +67,7 @@
 
 <!-- ================= 选题组卷页 ================= -->
 <view wx:elif="{{screen === 'select'}}" class="exam-wrap-flex">
-  <view class="review-top">
+  <view class="review-top" style="padding-top:calc({{statusBarHeight}}px + 28rpx);">
     <view class="back-btn" bindtap="backToDetail">
       <image class="back-ico" src="{{icons.back}}" />
     </view>
@@ -100,7 +100,7 @@
 
 <!-- ================= 错题测验页（即时反馈，同练习模式） ================= -->
 <view wx:elif="{{screen === 'quiz'}}" class="exam-wrap-flex">
-  <view class="exam-top">
+  <view class="exam-top" style="padding-top:calc({{statusBarHeight}}px + 24rpx);">
     <view class="exam-top-row"><view class="exam-name">错题测验</view></view>
     <view class="exam-progress-row">
       <text class="exam-progress-label">第 {{quizIndex+1}} / {{quizTotal}} 题</text>
@@ -143,7 +143,7 @@
 </view>
 
 <!-- ================= 测验完成页 ================= -->
-<view wx:elif="{{screen === 'done'}}" class="result-wrap">
+<view wx:elif="{{screen === 'done'}}" class="result-wrap" style="padding-top:calc({{statusBarHeight}}px + 52rpx);">
   <view class="result-title">错题测验完成</view>
   <view class="result-desc">本次共 {{doneTotal}} 题，答对 {{doneCorrect}} 题，正确率 {{donePct}}%。</view>
   <view class="result-actions">

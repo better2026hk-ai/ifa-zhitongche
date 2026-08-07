@@ -1,4 +1,4 @@
-<view class="login-wrap">
+<view class="login-wrap" style="padding-top:{{statusBarHeight}}px;">
   <view class="top-back-row" wx:if="{{isEdit}}">
     <view class="back-btn" bindtap="handleBack">
       <image class="back-ico" src="{{backIcon}}" />

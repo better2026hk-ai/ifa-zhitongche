@@ -1,4 +1,5 @@
 const store = require('../../utils/store.js');
+const { getStatusBarHeight } = require('../../utils/util.js');
 
 const BACK_ICON = `data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">' +
@@ -19,7 +20,8 @@ Page({
     nickname: '',
     avatarUrl: '',
     accountId: '',
-    registeredAt: ''
+    registeredAt: '',
+    statusBarHeight: 24
   },
 
   onShow() {
@@ -33,7 +35,8 @@ Page({
       nickname: profile.nickname,
       avatarUrl: profile.avatarUrl || '',
       accountId: store.getOrCreateAccountId(),
-      registeredAt: firstLoginAt ? fmtDate(firstLoginAt) : '—'
+      registeredAt: firstLoginAt ? fmtDate(firstLoginAt) : '—',
+      statusBarHeight: getStatusBarHeight()
     });
   },
 

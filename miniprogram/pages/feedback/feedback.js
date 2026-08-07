@@ -1,4 +1,5 @@
 const store = require('../../utils/store.js');
+const { getStatusBarHeight } = require('../../utils/util.js');
 
 function svgIcon(paths, extra) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ${extra}>${paths}</svg>`;
@@ -23,7 +24,8 @@ Page({
     stars: [1, 2, 3, 4, 5],
     rating: 0,
     text: '',
-    submitted: false
+    submitted: false,
+    statusBarHeight: 24
   },
 
   onShow() {
@@ -31,7 +33,7 @@ Page({
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
-    this.setData({ rating: 0, text: '', submitted: false });
+    this.setData({ rating: 0, text: '', submitted: false, statusBarHeight: getStatusBarHeight() });
   },
 
   setRating(e) {

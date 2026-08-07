@@ -1,4 +1,4 @@
-<scroll-view class="home-scroll" scroll-y="true">
+<scroll-view class="home-scroll" scroll-y="true" style="padding-top:calc({{statusBarHeight}}px + 12rpx);">
   <image class="hero-banner" src="/images/exam-list-banner.jpg" mode="widthFix" />
   <view class="paper-list">
     <view

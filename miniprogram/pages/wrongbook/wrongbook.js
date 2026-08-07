@@ -1,5 +1,5 @@
 const store = require('../../utils/store.js');
-const { stripLeadingNumber, shuffle } = require('../../utils/util.js');
+const { stripLeadingNumber, shuffle, getStatusBarHeight } = require('../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -37,7 +37,8 @@ Page({
     doneCorrect: 0,
     donePct: 0,
     letters: LETTERS,
-    icons: ICONS
+    icons: ICONS,
+    statusBarHeight: 24
   },
 
   onShow() {
@@ -48,7 +49,7 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }
-    this.setData({ screen: 'list' });
+    this.setData({ screen: 'list', statusBarHeight: getStatusBarHeight() });
     this.refreshList();
   },
 

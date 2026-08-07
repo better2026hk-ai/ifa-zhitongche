@@ -1,4 +1,4 @@
-<view class="review-top">
+<view class="review-top" style="padding-top:calc({{statusBarHeight}}px + 28rpx);">
   <view class="back-btn" bindtap="goBack">
     <image class="back-ico" src="{{backIcon}}" />
   </view>

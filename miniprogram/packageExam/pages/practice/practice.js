@@ -1,5 +1,5 @@
 const store = require('../../../utils/store.js');
-const { stripLeadingNumber } = require('../../../utils/util.js');
+const { stripLeadingNumber, getStatusBarHeight } = require('../../../utils/util.js');
 const BANKS = require('../../data/index.js');
 
 const CN_ORDER = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10 };
@@ -44,7 +44,8 @@ Page({
     progressPct: 0,
     sheetVisible: false,
     letters: LETTERS,
-    icons: ICONS
+    icons: ICONS,
+    statusBarHeight: 24
   },
 
   onLoad(options) {
@@ -52,6 +53,7 @@ Page({
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
+    this.setData({ statusBarHeight: getStatusBarHeight() });
     const key = options.key;
     const chapters = groupByChapter(BANKS[key]);
     this.setData({

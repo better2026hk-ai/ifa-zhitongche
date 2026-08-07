@@ -1,6 +1,6 @@
 <!-- ================= 练习答题页 ================= -->
 <view wx:if="{{screen === 'question'}}" class="exam-wrap-flex">
-  <view class="exam-top">
+  <view class="exam-top" style="padding-top:calc({{statusBarHeight}}px + 24rpx);">
     <view class="exam-top-row">
       <view class="back-btn" bindtap="exitPractice">
         <image class="back-ico" src="{{icons.back}}" />
@@ -54,7 +54,7 @@
 </view>
 
 <!-- ================= 本章完成页 ================= -->
-<view wx:elif="{{screen === 'done'}}" class="result-wrap">
+<view wx:elif="{{screen === 'done'}}" class="result-wrap" style="padding-top:calc({{statusBarHeight}}px + 52rpx);">
   <view class="result-title">第{{currentChapterNum}}章练习完成</view>
   <view class="result-desc">{{currentChapterTitle}} · 共 {{chapterTotal}} 题</view>
   <view class="result-actions">

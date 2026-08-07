@@ -1,4 +1,4 @@
-<scroll-view class="home-scroll" scroll-y="true">
+<scroll-view class="home-scroll" scroll-y="true" style="padding-top:calc({{statusBarHeight}}px + 12rpx);">
   <view class="topbar">
     <view class="brand">
       <image class="brand-mark" src="/images/app-icon.png" mode="aspectFill" />

@@ -1,5 +1,6 @@
 const { POLICY_CONTENT } = require('../../utils/policy-content.js');
 const { parseBold } = require('../../utils/richtext.js');
+const { getStatusBarHeight } = require('../../utils/util.js');
 
 const BACK_ICON = `data:image/svg+xml,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">' +
@@ -10,10 +11,12 @@ const BACK_ICON = `data:image/svg+xml,${encodeURIComponent(
 Page({
   data: {
     backIcon: BACK_ICON,
-    doc: null
+    doc: null,
+    statusBarHeight: 24
   },
 
   onLoad(options) {
+    this.setData({ statusBarHeight: getStatusBarHeight() });
     const type = options.type === 'privacy' ? 'privacy' : 'terms';
     const raw = POLICY_CONTENT[type];
     const doc = {

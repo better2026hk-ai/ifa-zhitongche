@@ -23,4 +23,20 @@ function fmtTime(sec) {
   return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 }
 
-module.exports = { suggestNickname, stripLeadingNumber, shuffle, fmtTime };
+// env(safe-area-inset-top) 在部分 Android 微信客户端上不可靠（直接返回 0），
+// 所以顶部安全区改成用这个真实测量值，而不是 CSS 里猜一个固定数字。
+function getStatusBarHeight() {
+  try {
+    const info = wx.getWindowInfo();
+    if (info && info.statusBarHeight) return info.statusBarHeight;
+  } catch (e) {
+    // wx.getWindowInfo 是较新的 API，兜底用 getSystemInfoSync
+  }
+  try {
+    return wx.getSystemInfoSync().statusBarHeight || 24;
+  } catch (e) {
+    return 24;
+  }
+}
+
+module.exports = { suggestNickname, stripLeadingNumber, shuffle, fmtTime, getStatusBarHeight };

@@ -1,4 +1,4 @@
-<view class="review-top">
+<view class="review-top" style="padding-top:calc({{statusBarHeight}}px + 28rpx);">
   <view class="back-btn" bindtap="goBack">
     <image class="back-ico" src="{{backIcon}}" />
   </view>
@@ -26,7 +26,7 @@
   <button class="result-btn primary" bindtap="submit">提交反馈</button>
 </scroll-view>
 
-<view wx:else class="result-wrap" style="padding-top:calc(120rpx + max(24px, env(safe-area-inset-top)));">
+<view wx:else class="result-wrap" style="padding-top:calc({{statusBarHeight}}px + 120rpx);">
   <view class="feedback-thanks-ico">
     <image src="{{checkIcon}}" />
   </view>
