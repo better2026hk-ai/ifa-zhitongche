@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   gap: 28rpx;
-  padding: env(safe-area-inset-top) 80rpx 200rpx;
+  padding: max(24px, env(safe-area-inset-top)) 80rpx 200rpx;
   text-align: center;
 }
 

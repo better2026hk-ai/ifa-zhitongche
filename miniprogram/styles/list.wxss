@@ -3,7 +3,7 @@
 
 .home-scroll {
   height: 100vh;
-  padding: calc(12rpx + env(safe-area-inset-top)) 40rpx 0;
+  padding: calc(12rpx + max(24px, env(safe-area-inset-top))) 40rpx 0;
   box-sizing: border-box;
 }
 
