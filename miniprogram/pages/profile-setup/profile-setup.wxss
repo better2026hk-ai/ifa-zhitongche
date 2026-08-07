@@ -1,17 +1,29 @@
 @import "../../styles/shared.wxss";
 
-.avatar-picker {
+/* chooseAvatar 按钮涉及原生相机/相册选择器，它自己的原生渲染不完全遵守
+   CSS 宽高（宽度经常比设置值宽），单靠 border-radius:50% 会变成椭圆。
+   外层用普通 view 做圆形裁剪容器，按钮贴满裁剪区域，可见形状就一定是圆的。 */
+.avatar-picker-outer {
   width: 168rpx;
   height: 168rpx;
   border-radius: 50%;
+  overflow: hidden;
   background: var(--surface-2);
   border: 2rpx solid var(--border);
+  margin-bottom: 20rpx;
+}
+
+.avatar-picker {
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  border-radius: 0;
   padding: 0;
-  margin-bottom: 20rpx;
+  margin: 0;
 }
 
 .avatar-img {

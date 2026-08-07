@@ -8,10 +8,12 @@
   <view class="login-title" style="margin-bottom:8rpx;">{{isEdit ? '编辑资料' : '完善你的资料'}}</view>
   <view class="login-desc" style="margin-bottom:52rpx;">{{isEdit ? '修改头像与昵称' : '选择头像、确认昵称后即可开始使用'}}</view>
 
-  <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-    <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
-    <text wx:else class="avatar-placeholder">＋</text>
-  </button>
+  <view class="avatar-picker-outer">
+    <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image wx:if="{{avatarUrl}}" class="avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
+      <text wx:else class="avatar-placeholder">＋</text>
+    </button>
+  </view>
   <view class="avatar-hint">点击选择头像</view>
 
   <view class="field">
