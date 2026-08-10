@@ -7,7 +7,7 @@
       </view>
       <view class="exam-name" style="margin-left:16rpx;">{{paperMeta.title}}</view>
       <view class="chapter-chip" bindtap="toggleSheet">
-        <text>第{{currentChapterNum}}章</text>
+        <text>{{currentChapterBadge}}</text>
         <image src="{{icons.chevronDown}}" />
       </view>
     </view>
@@ -62,7 +62,7 @@
 
 <!-- ================= 本章完成页 ================= -->
 <view wx:elif="{{screen === 'done'}}" class="result-wrap" style="padding-top:calc({{statusBarHeight}}px + 52rpx);">
-  <view class="result-title">第{{currentChapterNum}}章练习完成</view>
+  <view class="result-title">{{currentChapterBadge}}练习完成</view>
   <view class="result-desc">{{currentChapterTitle}} · 共 {{chapterTotal}} 题</view>
   <view class="result-actions">
     <button class="result-btn primary" bindtap="restartChapter">重新练习本章</button>
@@ -85,7 +85,7 @@
       bindtap="switchChapter"
     >
       <view class="sheet-item-left">
-        <view class="sheet-badge">第{{item.chapter}}章</view>
+        <view class="sheet-badge">{{item.badgeLabel}}</view>
         <view>
           <view class="sheet-item-title">{{item.title}}</view>
           <view class="sheet-item-sub">{{item.items.length}} 题</view>

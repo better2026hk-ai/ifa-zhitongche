@@ -9,7 +9,13 @@ function groupByChapter(questions) {
     if (!map.has(q.chapter)) map.set(q.chapter, { chapter: q.chapter, title: q.chapterTitle, items: [] });
     map.get(q.chapter).items.push(q);
   });
-  return Array.from(map.values()).sort((a, b) => CN_ORDER[a.chapter] - CN_ORDER[b.chapter]);
+  const chapters = Array.from(map.values()).sort((a, b) => CN_ORDER[a.chapter] - CN_ORDER[b.chapter]);
+  chapters.forEach((ch) => { ch.badgeLabel = `第${ch.chapter}章`; });
+  // "全部章节"是个虚拟章节，把所有真实章节的题目按原顺序接起来——练完
+  // 一章不想被锁在里面、想直接往下做的时候用。放在最后一个，不占用真实
+  // 章节的下标（断点续练存的 chapterIdx 就不会因为这个而错位）。
+  chapters.push({ chapter: '全部', badgeLabel: '全部章节', title: '全部章节', items: questions });
+  return chapters;
 }
 
 function svgIcon(paths, color) {
@@ -40,7 +46,7 @@ Page({
     picked: null,
     currentQuestion: null,
     currentChapterTitle: '',
-    currentChapterNum: '',
+    currentChapterBadge: '',
     chapterTotal: 0,
     progressPct: 0,
     sheetVisible: false,
@@ -102,7 +108,7 @@ Page({
       this._savedProgress = saved;
       this.setData({
         resumePromptVisible: true,
-        resumeChapterLabel: `第${savedChapter.chapter}章第${saved.qIndex + 1}题`
+        resumeChapterLabel: `${savedChapter.badgeLabel}第${saved.qIndex + 1}题`
       });
     }
   },
@@ -152,7 +158,7 @@ Page({
     const prior = this.chapterAnswers[qIndex];
     this.setData({
       currentChapterTitle: ch.title,
-      currentChapterNum: ch.chapter,
+      currentChapterBadge: ch.badgeLabel,
       chapterTotal: ch.items.length,
       // 练习模式按章节顺序作答，原编号（"N. "）有意义要保留——只有跨章节
       // 随机抽题的模拟考试/错题本测验才需要去掉（文档 5.5 节）。
