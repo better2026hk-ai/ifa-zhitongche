@@ -43,3 +43,10 @@
   color: var(--text-1);
   margin-top: 6rpx;
 }
+
+/* "IFA直通车"作为一个整体不能从中间断开——宽度不够时让它整体换到下一行，
+   而不是像普通中英混排那样在字符间随便找地方断，断出"IFA直"/"通车"这种
+   一半一半的效果。 */
+.nowrap-unit {
+  white-space: nowrap;
+}
