@@ -1,5 +1,5 @@
 const store = require('../../utils/store.js');
-const { getStatusBarHeight } = require('../../utils/util.js');
+const { getStatusBarHeight, getMenuButtonGap } = require('../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -37,7 +37,8 @@ Page({
     logoutIcon: LOGOUT_ICON,
     arrowIcon: ARROW_ICON,
     icons: ICONS,
-    statusBarHeight: 24
+    statusBarHeight: 24,
+    menuGap: 0
   },
 
   // "我的"是个人数据主页，没什么可给游客看的，但同样不能一上来就把人
@@ -46,7 +47,7 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 3, hidden: false });
     }
-    this.setData({ statusBarHeight: getStatusBarHeight() });
+    this.setData({ statusBarHeight: getStatusBarHeight(), menuGap: getMenuButtonGap() });
     if (!store.isLoggedIn()) {
       this.setData({ loggedIn: false });
       return;

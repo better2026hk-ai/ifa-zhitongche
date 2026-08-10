@@ -1,6 +1,6 @@
 <scroll-view class="home-scroll" scroll-y="true" style="padding-top:calc({{statusBarHeight}}px + 12rpx);">
   <block wx:if="{{loggedIn}}">
-    <view class="profile-header">
+    <view class="profile-header" style="padding-right:{{menuGap}}px;">
       <view class="profile-avatar-lg">
         <image wx:if="{{avatarUrl}}" class="profile-avatar-img" src="{{avatarUrl}}" mode="aspectFill" />
         <text wx:else>👤</text>
