@@ -47,7 +47,13 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 3, hidden: false });
     }
-    this.setData({ statusBarHeight: getStatusBarHeight(), menuGap: getMenuButtonGap() });
+    // getMenuButtonGap() 量的是"胶囊按钮左边到屏幕最右边"的绝对距离；这个
+    // 页面的滚动容器（.home-scroll）自己已经有 40rpx（约 20px）的右侧
+    // 页面留白了，直接把 menuGap 整个拿来当 .profile-header 的
+    // padding-right 会把这 20px 重复算一遍，把编辑按钮推得比躲开胶囊
+    // 实际需要的位置还靠左很多，白白挤掉昵称/副标题能用的宽度。减掉这
+    // 20px，编辑按钮就只往右挪到刚好不被挡住的位置。
+    this.setData({ statusBarHeight: getStatusBarHeight(), menuGap: Math.max(0, getMenuButtonGap() - 20) });
     if (!store.isLoggedIn()) {
       this.setData({ loggedIn: false });
       return;
