@@ -1,7 +1,7 @@
 <!-- ================= 练习答题页 ================= -->
 <view wx:if="{{screen === 'question'}}" class="exam-wrap-flex">
   <view class="exam-top" style="padding-top:calc({{statusBarHeight}}px + 24rpx);">
-    <view class="exam-top-row">
+    <view class="exam-top-row" style="padding-right:{{menuGap}}px;">
       <view class="back-btn" bindtap="exitPractice">
         <image class="back-ico" src="{{icons.back}}" />
       </view>

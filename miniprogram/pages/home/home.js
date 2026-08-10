@@ -1,6 +1,6 @@
 const store = require('../../utils/store.js');
 const { HOME_BANKS } = require('../../utils/banks.js');
-const { getStatusBarHeight } = require('../../utils/util.js');
+const { getStatusBarHeight, getMenuButtonGap } = require('../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -25,7 +25,8 @@ Page({
     chevronIcon: CHEVRON_ICON,
     arrowIcon: ARROW_ICON,
     checkIcon: CHECK_ICON,
-    statusBarHeight: 24
+    statusBarHeight: 24,
+    menuGap: 0
   },
 
   // 首页允许游客浏览（微信审核要求：不能一进小程序就强制登录），题库列表/
@@ -35,7 +36,7 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0, hidden: false });
     }
-    this.setData({ statusBarHeight: getStatusBarHeight() });
+    this.setData({ statusBarHeight: getStatusBarHeight(), menuGap: getMenuButtonGap() });
     const user = store.isLoggedIn() ? await store.fetchUserDoc() : null;
     this._user = user;
     this.refresh(user);

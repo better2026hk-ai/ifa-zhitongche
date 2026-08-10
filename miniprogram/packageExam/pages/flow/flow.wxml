@@ -40,7 +40,7 @@
 <!-- ================= 答题页 ================= -->
 <view wx:elif="{{phase === 'exam'}}" class="exam-wrap-flex">
   <view class="exam-top" style="padding-top:calc({{statusBarHeight}}px + 24rpx);">
-    <view class="exam-top-row">
+    <view class="exam-top-row" style="padding-right:{{menuGap}}px;">
       <view class="exam-name">{{config.name}}</view>
       <view class="top-right-group">
         <view class="timer {{timerWarn ? 'warn' : ''}}">

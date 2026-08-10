@@ -1,6 +1,6 @@
 const store = require('../../../utils/store.js');
 const { EXAM_CONFIG } = require('../../../utils/banks.js');
-const { stripLeadingNumber, fmtTime, getStatusBarHeight } = require('../../../utils/util.js');
+const { stripLeadingNumber, fmtTime, getStatusBarHeight, getMenuButtonGap } = require('../../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -65,7 +65,8 @@ Page({
     resultTitle: '',
     resultDesc: '',
     icons: ICONS,
-    statusBarHeight: 24
+    statusBarHeight: 24,
+    menuGap: 0
   },
 
   async onLoad(options) {
@@ -73,7 +74,7 @@ Page({
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
-    this.setData({ statusBarHeight: getStatusBarHeight() });
+    this.setData({ statusBarHeight: getStatusBarHeight(), menuGap: getMenuButtonGap() });
     if (options.mode === 'history') {
       const history = await store.fetchExamHistory();
       const entry = store.getExamHistoryEntry(history, Number(options.historyIndex));

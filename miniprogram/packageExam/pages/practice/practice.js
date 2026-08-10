@@ -1,5 +1,5 @@
 const store = require('../../../utils/store.js');
-const { getStatusBarHeight } = require('../../../utils/util.js');
+const { getStatusBarHeight, getMenuButtonGap } = require('../../../utils/util.js');
 
 const CN_ORDER = { 一: 1, 二: 2, 三: 3, 四: 4, 五: 5, 六: 6, 七: 7, 八: 8, 九: 9, 十: 10 };
 
@@ -50,7 +50,8 @@ Page({
     resumeChapterLabel: '',
     letters: LETTERS,
     icons: ICONS,
-    statusBarHeight: 24
+    statusBarHeight: 24,
+    menuGap: 0
   },
 
   async onLoad(options) {
@@ -58,7 +59,7 @@ Page({
       wx.reLaunch({ url: '/pages/login/login' });
       return;
     }
-    this.setData({ statusBarHeight: getStatusBarHeight() });
+    this.setData({ statusBarHeight: getStatusBarHeight(), menuGap: getMenuButtonGap() });
     const key = options.key;
     wx.showLoading({ title: '加载题库中', mask: true });
     let questions;

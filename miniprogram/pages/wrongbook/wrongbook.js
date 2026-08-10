@@ -1,5 +1,5 @@
 const store = require('../../utils/store.js');
-const { stripLeadingNumber, shuffle, getStatusBarHeight } = require('../../utils/util.js');
+const { stripLeadingNumber, shuffle, getStatusBarHeight, getMenuButtonGap } = require('../../utils/util.js');
 
 function svgIcon(paths, color) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">${paths.replace(/currentColor/g, color)}</svg>`;
@@ -38,7 +38,8 @@ Page({
     donePct: 0,
     letters: LETTERS,
     icons: ICONS,
-    statusBarHeight: 24
+    statusBarHeight: 24,
+    menuGap: 0
   },
 
   // 错题本天然是个人数据，游客没什么可看的，但不能像以前那样直接把人
@@ -48,7 +49,7 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }
-    this.setData({ statusBarHeight: getStatusBarHeight() });
+    this.setData({ statusBarHeight: getStatusBarHeight(), menuGap: getMenuButtonGap() });
     if (!store.isLoggedIn() || !(await store.hasProfile())) {
       this.setData({ screen: 'guest' });
       this.syncTabBarVisibility();

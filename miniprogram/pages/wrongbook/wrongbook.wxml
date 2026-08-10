@@ -75,7 +75,7 @@
 
 <!-- ================= 选题组卷页 ================= -->
 <view wx:elif="{{screen === 'select'}}" class="exam-wrap-flex">
-  <view class="review-top" style="padding-top:calc({{statusBarHeight}}px + 28rpx);">
+  <view class="review-top" style="padding-top:calc({{statusBarHeight}}px + 28rpx); padding-right:{{menuGap}}px;">
     <view class="back-btn" bindtap="backToDetail">
       <image class="back-ico" src="{{icons.back}}" />
     </view>

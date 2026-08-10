@@ -45,4 +45,29 @@ function wxLoginAsync() {
   });
 }
 
-module.exports = { suggestNickname, stripLeadingNumber, shuffle, fmtTime, getStatusBarHeight, wxLoginAsync };
+// navigationStyle 是 custom（全自定义导航），微信还是会在右上角叠一个
+// 系统胶囊按钮（⋯ 和圆点），这东西不占页面布局的位置，纯粹悬浮在最上层。
+// 页面自己顶部右侧的按钮/文字如果没让出这块地方，会被这个胶囊按钮盖住/
+// 挡住点不到。用 wx.getMenuButtonBoundingClientRect() 量出胶囊实际
+// 位置，算出"从屏幕右边缘算，要留多少 px 才不会被挡住"，页面里给右侧
+// 控件加这么多 padding-right/margin-right 就行。
+function getMenuButtonGap() {
+  try {
+    const rect = wx.getMenuButtonBoundingClientRect();
+    const info = wx.getWindowInfo();
+    if (rect && info) return Math.max(0, info.windowWidth - rect.left) + 16;
+  } catch (e) {
+    // 拿不到就用一个常见胶囊宽度（约87px）+ 间距的保守估计值兜底
+  }
+  return 110;
+}
+
+module.exports = {
+  suggestNickname,
+  stripLeadingNumber,
+  shuffle,
+  fmtTime,
+  getStatusBarHeight,
+  wxLoginAsync,
+  getMenuButtonGap
+};
