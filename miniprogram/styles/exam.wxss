@@ -506,6 +506,8 @@
   grid-template-columns: repeat(6, 1fr);
   gap: 18rpx;
   margin-bottom: 12rpx;
+  max-height: 56vh;
+  overflow-y: auto;
 }
 
 .qcell {
