@@ -11,10 +11,6 @@ function groupByChapter(questions) {
   });
   const chapters = Array.from(map.values()).sort((a, b) => CN_ORDER[a.chapter] - CN_ORDER[b.chapter]);
   chapters.forEach((ch) => { ch.badgeLabel = `第${ch.chapter}章`; });
-  // "全部章节"是个虚拟章节，把所有真实章节的题目按原顺序接起来——练完
-  // 一章不想被锁在里面、想直接往下做的时候用。放在最后一个，不占用真实
-  // 章节的下标（断点续练存的 chapterIdx 就不会因为这个而错位）。
-  chapters.push({ chapter: '全部', badgeLabel: '全部章节', title: '全部章节', items: questions });
   return chapters;
 }
 
@@ -91,6 +87,11 @@ Page({
     store.getWrongBookForPaper(wrongList, key).forEach((w) => this._wrongByStem.set(w.stem, w));
 
     const chapters = groupByChapter(questions);
+    // chapterIdx === -1 时代表"全部章节"（没锁在某一章里）——这个伪章节
+    // 不进 chapters 列表（不然切换面板里会多出一行可选项，用户明确不想
+    // 要），只在 chapterAt() 里按下标 -1 兜底返回，配合"再点一次已选中的
+    // 章节就取消选择"的交互（switchChapter）。
+    this._allChapter = { chapter: '全部', badgeLabel: '全部章节', title: '全部章节', items: questions };
     this.setData({
       paperKey: key,
       paperMeta: store.getPaperMeta(key),
@@ -103,7 +104,7 @@ Page({
     this.updateView();
 
     const saved = user && user.practiceProgress && user.practiceProgress[key];
-    const savedChapter = saved && chapters[saved.chapterIdx];
+    const savedChapter = saved && this.chapterAt(saved.chapterIdx);
     if (savedChapter && savedChapter.items[saved.qIndex] && (saved.chapterIdx !== 0 || saved.qIndex !== 0)) {
       this._savedProgress = saved;
       this.setData({
@@ -144,16 +145,23 @@ Page({
   // 不用非得在本次会话里重新答一遍才知道。
   seedChapterAnswers(chapterIdx) {
     this.resetChapterAnswers();
-    const ch = this.data.chapters[chapterIdx];
+    const ch = this.chapterAt(chapterIdx);
     ch.items.forEach((q, i) => {
       const w = this._wrongByStem.get(q.stem);
       if (w) this.chapterAnswers[i] = { picked: w.lastPicked, correct: false };
     });
   },
 
+  // chapterIdx 为 -1 时对应"全部章节"这个伪章节（this._allChapter），不在
+  // data.chapters 列表里——所有按下标取章节的地方都要走这个方法，不能直接
+  // 用 chapters[chapterIdx]。
+  chapterAt(chapterIdx) {
+    return chapterIdx === -1 ? this._allChapter : this.data.chapters[chapterIdx];
+  },
+
   updateView() {
-    const { chapters, chapterIdx, qIndex } = this.data;
-    const ch = chapters[chapterIdx];
+    const { qIndex } = this.data;
+    const ch = this.chapterAt(this.data.chapterIdx);
     const q = ch.items[qIndex];
     const prior = this.chapterAnswers[qIndex];
     this.setData({
@@ -173,7 +181,7 @@ Page({
     if (this.data.answered) return;
     const letter = e.currentTarget.dataset.letter;
     const { chapterIdx, qIndex, paperKey } = this.data;
-    const ch = this.data.chapters[chapterIdx];
+    const ch = this.chapterAt(chapterIdx);
     const q = ch.items[qIndex];
     const isCorrect = letter === q.answer;
     this.chapterAnswers[qIndex] = { picked: letter, correct: isCorrect };
@@ -185,7 +193,7 @@ Page({
   // 题号导航/上一题/下一题按钮统一走这个方法——不再要求"当前题必须先
   // 作答才能离开"，跟模拟考试的导航自由度一致。
   goToQuestion(idx) {
-    const ch = this.data.chapters[this.data.chapterIdx];
+    const ch = this.chapterAt(this.data.chapterIdx);
     if (idx < 0 || idx >= ch.items.length) return;
     this.setData({ qIndex: idx, navVisible: false });
     this.updateView();
@@ -197,7 +205,7 @@ Page({
   },
 
   nextQuestion() {
-    const ch = this.data.chapters[this.data.chapterIdx];
+    const ch = this.chapterAt(this.data.chapterIdx);
     if (this.data.qIndex + 1 < ch.items.length) {
       this.goToQuestion(this.data.qIndex + 1);
     } else {
@@ -206,7 +214,7 @@ Page({
   },
 
   toggleNavigator() {
-    const ch = this.data.chapters[this.data.chapterIdx];
+    const ch = this.chapterAt(this.data.chapterIdx);
     const navCells = ch.items.map((q, i) => {
       const a = this.chapterAnswers[i];
       let state = 'blank';
@@ -234,17 +242,20 @@ Page({
     store.saveProgress(this.data.paperKey, this.data.chapterIdx, 0).catch(() => {});
   },
 
+  // 再点一次已经选中的章节，视为取消选择——回到"全部章节"（chapterIdx
+  // 为 -1），不用另外在切换面板里加一行"全部章节"可选项。
   switchChapter(e) {
     const idx = Number(e.currentTarget.dataset.index);
-    this.seedChapterAnswers(idx);
+    const newIdx = idx === this.data.chapterIdx ? -1 : idx;
+    this.seedChapterAnswers(newIdx);
     this.setData({
-      chapterIdx: idx,
+      chapterIdx: newIdx,
       qIndex: 0,
       sheetVisible: false,
       screen: 'question'
     });
     this.updateView();
-    store.saveProgress(this.data.paperKey, idx, 0).catch(() => {});
+    store.saveProgress(this.data.paperKey, newIdx, 0).catch(() => {});
   },
 
   toggleSheet() {
