@@ -12,15 +12,34 @@ const WX_ICON = `data:image/svg+xml,${encodeURIComponent(
   '</svg>'
 )}`;
 
+const BACK_ICON = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">' +
+  '<path d="M15 6l-6 6 6 6" stroke="#14161A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>' +
+  '</svg>'
+)}`;
+
+const CHECK_ICON = `data:image/svg+xml,${encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">' +
+  '<path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' +
+  '</svg>'
+)}`;
+
 Page({
   data: {
     wxIcon: WX_ICON,
+    backIcon: BACK_ICON,
+    checkIcon: CHECK_ICON,
     loggingIn: false,
+    agreed: false,
+    canGoBack: false,
     statusBarHeight: 24
   },
 
   async onShow() {
-    this.setData({ statusBarHeight: getStatusBarHeight() });
+    this.setData({
+      statusBarHeight: getStatusBarHeight(),
+      canGoBack: getCurrentPages().length > 1
+    });
     // Already fully set up (e.g. user tapped back into this page) — skip
     // straight past the screens they've already completed.
     if (!store.isLoggedIn()) return;
@@ -32,10 +51,22 @@ Page({
     }
   },
 
+  goBack() {
+    wx.navigateBack();
+  },
+
+  toggleAgree() {
+    this.setData({ agreed: !this.data.agreed });
+  },
+
   // Supabase 不认识微信身份，要靠 wx.login() 的 code 在服务端换 openid——
   // 这一步是这次接 Supabase 才重新需要的（跟微信云开发不一样，云开发直连
   // 数据库时这一步是多余的）。
   async handleLogin() {
+    if (!this.data.agreed) {
+      wx.showToast({ title: '请先阅读并勾选同意用户协议和隐私政策', icon: 'none' });
+      return;
+    }
     this.setData({ loggingIn: true });
     try {
       const { code } = await wxLoginAsync();

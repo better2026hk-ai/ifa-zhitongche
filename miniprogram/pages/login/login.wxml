@@ -1,4 +1,10 @@
 <view class="login-wrap" style="padding-top:{{statusBarHeight}}px;">
+  <view wx:if="{{canGoBack}}" class="top-back-row">
+    <view class="back-btn" bindtap="goBack">
+      <image class="back-ico" src="{{backIcon}}" />
+    </view>
+  </view>
+
   <image class="login-mark" src="/images/app-icon.png" mode="aspectFill" />
   <view class="login-title">欢迎使用 IFA直通车</view>
   <view class="login-desc">香港保险中介人资格考试题库与模拟考试，登录后即可同步你的练习进度与错题记录。</view>
@@ -9,9 +15,14 @@
   </button>
 
   <view class="login-agreement">
-    登录即代表同意
-    <text class="link" bindtap="viewTerms">《用户协议》</text>
-    与
-    <text class="link" bindtap="viewPrivacy">《隐私政策》</text>
+    <view class="agree-check {{agreed ? 'checked' : ''}}" bindtap="toggleAgree">
+      <image wx:if="{{agreed}}" src="{{checkIcon}}" />
+    </view>
+    <view class="agree-text" bindtap="toggleAgree">
+      我已阅读并同意
+      <text class="link" catchtap="viewTerms">《用户协议》</text>
+      与
+      <text class="link" catchtap="viewPrivacy">《隐私政策》</text>
+    </view>
   </view>
 </view>

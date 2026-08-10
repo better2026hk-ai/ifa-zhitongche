@@ -73,3 +73,9 @@
   color: #fff;
   box-shadow: 0 16rpx 36rpx -16rpx rgba(226, 96, 75, 0.5);
 }
+
+.confirm-btn.primary {
+  background: linear-gradient(120deg, var(--green), var(--green-bright));
+  color: #fff;
+  box-shadow: 0 16rpx 36rpx -16rpx rgba(11, 107, 99, 0.5);
+}

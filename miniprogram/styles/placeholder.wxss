@@ -37,3 +37,14 @@
   color: var(--text-1);
   line-height: 1.6;
 }
+
+.placeholder-btn {
+  margin-top: 4rpx;
+  padding: 22rpx 56rpx;
+  border-radius: 28rpx;
+  background: linear-gradient(120deg, var(--green), var(--green-bright));
+  color: #fff;
+  font-weight: 700;
+  font-size: 27rpx;
+  box-shadow: 0 20rpx 44rpx -14rpx rgba(11, 107, 99, 0.55);
+}

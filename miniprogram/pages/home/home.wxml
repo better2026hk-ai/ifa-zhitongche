@@ -11,8 +11,8 @@
   </view>
 
   <view class="greeting">
-    Hey，{{nickname}}
-    <text class="greeting-sub">备考第 {{days}} 天</text>
+    {{loggedIn ? ('Hey，' + nickname) : 'Hey，欢迎来到 IFA直通车'}}
+    <text class="greeting-sub">{{loggedIn ? ('备考第 ' + days + ' 天') : '登录后可同步你的练习进度'}}</text>
   </view>
 
   <view class="selector" bindtap="openSheet">
@@ -40,7 +40,7 @@
         <view class="dash-info-title">{{current.tag}} · {{current.title}}</view>
         <view class="dash-info-desc">{{current.desc}}</view>
         <button class="cta" bindtap="onContinue">
-          <text class="cta-label">继续练习</text>
+          <text class="cta-label">{{loggedIn ? '继续练习' : '登录开始练习'}}</text>
           <image class="cta-arrow" src="{{arrowIcon}}" />
         </button>
       </view>
@@ -99,4 +99,15 @@
     </view>
   </view>
   <view class="sheet-cancel" bindtap="closeSheet">取消</view>
+</view>
+
+<view class="confirm-overlay {{loginPromptVisible ? 'show' : ''}}">
+  <view class="confirm-box">
+    <view class="confirm-title">需要登录</view>
+    <view class="confirm-text">这个功能要登录后才能使用，是否前往登录？</view>
+    <view class="confirm-actions">
+      <button class="confirm-btn primary" bindtap="goLogin">去登录</button>
+      <button class="confirm-btn ghost" bindtap="closeLoginPrompt">取消</button>
+    </view>
+  </view>
 </view>

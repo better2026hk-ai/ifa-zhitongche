@@ -61,11 +61,40 @@
 }
 
 .login-agreement {
+  display: flex;
+  align-items: flex-start;
+  gap: 14rpx;
+  margin-top: 36rpx;
+  max-width: 520rpx;
+}
+
+.agree-check {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 3rpx solid var(--border);
+  flex-shrink: 0;
+  margin-top: 2rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agree-check.checked {
+  background: linear-gradient(140deg, var(--green), var(--green-bright));
+  border-color: transparent;
+}
+
+.agree-check image {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.agree-text {
   font-size: 22rpx;
   color: var(--text-2);
   line-height: 1.6;
-  margin-top: 36rpx;
-  max-width: 520rpx;
+  text-align: left;
 }
 
 .login-agreement .link {

@@ -1,4 +1,3 @@
-const store = require('../../utils/store.js');
 const { getStatusBarHeight } = require('../../utils/util.js');
 
 function svgIcon(paths, color) {
@@ -24,11 +23,8 @@ Page({
     statusBarHeight: 24
   },
 
-  async onShow() {
-    if (!store.isLoggedIn() || !(await store.hasProfile())) {
-      wx.reLaunch({ url: '/pages/login/login' });
-      return;
-    }
+  // 纯静态信息页，游客也能看，不需要登录门禁。
+  onShow() {
     this.setData({ statusBarHeight: getStatusBarHeight() });
   },
 

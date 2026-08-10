@@ -1,11 +1,11 @@
 {
   "pages": [
-    "pages/login/login",
-    "pages/profile-setup/profile-setup",
     "pages/home/home",
     "pages/exam/exam",
     "pages/wrongbook/wrongbook",
     "pages/profile/profile",
+    "pages/login/login",
+    "pages/profile-setup/profile-setup",
     "pages/policy/policy",
     "pages/exam-history/exam-history",
     "pages/account/account",

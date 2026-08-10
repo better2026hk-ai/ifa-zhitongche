@@ -18,3 +18,14 @@
   </view>
   <view style="height:200rpx;"></view>
 </scroll-view>
+
+<view class="confirm-overlay {{loginPromptVisible ? 'show' : ''}}">
+  <view class="confirm-box">
+    <view class="confirm-title">需要登录</view>
+    <view class="confirm-text">模拟考试要登录后才能开考（成绩要跟你的账号绑定），是否前往登录？</view>
+    <view class="confirm-actions">
+      <button class="confirm-btn primary" bindtap="goLogin">去登录</button>
+      <button class="confirm-btn ghost" bindtap="closeLoginPrompt">取消</button>
+    </view>
+  </view>
+</view>

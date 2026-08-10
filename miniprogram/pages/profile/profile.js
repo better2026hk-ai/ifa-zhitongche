@@ -25,6 +25,7 @@ function formatDate(timestamp) {
 
 Page({
   data: {
+    loggedIn: false,
     nickname: '',
     avatarUrl: '',
     days: 1,
@@ -39,20 +40,22 @@ Page({
     statusBarHeight: 24
   },
 
+  // "我的"是个人数据主页，没什么可给游客看的，但同样不能一上来就把人
+  // reLaunch 走——就地显示"请先登录"，「关于我们」这类静态信息照样能点进去。
   async onShow() {
-    if (!store.isLoggedIn()) {
-      wx.reLaunch({ url: '/pages/login/login' });
-      return;
-    }
-    const user = await store.fetchUserDoc();
-    if (!user || !user.nickname) {
-      wx.reLaunch({ url: '/pages/login/login' });
-      return;
-    }
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 3, hidden: false });
     }
     this.setData({ statusBarHeight: getStatusBarHeight() });
+    if (!store.isLoggedIn()) {
+      this.setData({ loggedIn: false });
+      return;
+    }
+    const user = await store.fetchUserDoc();
+    if (!user || !user.nickname) {
+      this.setData({ loggedIn: false });
+      return;
+    }
     const [history, wrongCount] = await Promise.all([store.fetchExamHistory(), store.countWrongBook()]);
     const historyPreview = history.slice(0, 3).map((h) => ({
       paperTag: h.paperTag,
@@ -62,6 +65,7 @@ Page({
       pct: h.total > 0 ? Math.round((h.correct / h.total) * 100) : 0
     }));
     this.setData({
+      loggedIn: true,
       nickname: user.nickname,
       avatarUrl: user.avatarUrl || '',
       days: store.daysSinceFirstLogin(user),
@@ -69,6 +73,10 @@ Page({
       historyPreview,
       historyCountLabel: Math.min(history.length, 20)
     });
+  },
+
+  goLogin() {
+    wx.navigateTo({ url: '/pages/login/login' });
   },
 
   onOpenHistory(e) {
@@ -107,6 +115,6 @@ Page({
   confirmLogout() {
     this.setData({ confirmVisible: false });
     store.logout();
-    wx.reLaunch({ url: '/pages/login/login' });
+    wx.reLaunch({ url: '/pages/home/home' });
   }
 });

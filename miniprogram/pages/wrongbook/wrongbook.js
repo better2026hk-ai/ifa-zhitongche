@@ -18,7 +18,7 @@ const LETTERS = ['A', 'B', 'C', 'D'];
 
 Page({
   data: {
-    screen: 'list', // list | detail | select | quiz | done
+    screen: 'list', // guest | list | detail | select | quiz | done
     grouped: [],
     paperTitle: '',
     selectedPaper: null,
@@ -41,17 +41,26 @@ Page({
     statusBarHeight: 24
   },
 
+  // 错题本天然是个人数据，游客没什么可看的，但不能像以前那样直接把人
+  // reLaunch 走——那样会让"未登录=看不到这个 tab"，跟审核要求的"先浏览、
+  // 用到功能再登录"冲突。改成在这个 tab 里就地显示"请先登录"提示。
   async onShow() {
-    if (!store.isLoggedIn() || !(await store.hasProfile())) {
-      wx.reLaunch({ url: '/pages/login/login' });
-      return;
-    }
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 2 });
     }
-    this.setData({ screen: 'list', statusBarHeight: getStatusBarHeight() });
+    this.setData({ statusBarHeight: getStatusBarHeight() });
+    if (!store.isLoggedIn() || !(await store.hasProfile())) {
+      this.setData({ screen: 'guest' });
+      this.syncTabBarVisibility();
+      return;
+    }
+    this.setData({ screen: 'list' });
     this.syncTabBarVisibility();
     this.refreshList();
+  },
+
+  goLogin() {
+    wx.navigateTo({ url: '/pages/login/login' });
   },
 
   // 详情/选题/测验这几个子屏幕跟列表页是同一个 tab 路由，不像模拟考试/练习
@@ -59,7 +68,7 @@ Page({
   // 不然会被挡住点不到（错题本详情页的"组一次错题测验"就是这么被挡住的）。
   syncTabBarVisibility() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ hidden: this.data.screen !== 'list' });
+      this.getTabBar().setData({ hidden: this.data.screen !== 'list' && this.data.screen !== 'guest' });
     }
   },
 

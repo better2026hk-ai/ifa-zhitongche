@@ -1,5 +1,6 @@
 @import "../../styles/sheet.wxss";
 @import "../../styles/list.wxss";
+@import "../../styles/confirm.wxss";
 
 .topbar {
   display: flex;

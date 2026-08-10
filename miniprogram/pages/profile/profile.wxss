@@ -3,6 +3,7 @@
 @import "../../styles/list.wxss";
 @import "../../styles/profile-header.wxss";
 @import "../../styles/settings.wxss";
+@import "../../styles/placeholder.wxss";
 
 .profile-edit {
   width: 68rpx;
