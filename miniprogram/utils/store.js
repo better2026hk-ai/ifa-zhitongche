@@ -215,6 +215,7 @@ async function fetchExamQuestions(paperKey, count) {
 
 async function answerQuestion(paperKey, q, pickedLetter) {
   const isCorrect = pickedLetter === q.answer;
+  const meta = getPaperMeta(paperKey);
   await callApi('answerQuestion', {
     paperKey,
     isCorrect,
@@ -222,7 +223,9 @@ async function answerQuestion(paperKey, q, pickedLetter) {
     stem: q.stem,
     options: q.options,
     answer: q.answer,
-    explanation: q.explanation || ''
+    explanation: q.explanation || '',
+    paperTag: meta.tag,
+    paperName: meta.title
   });
   if (_cachedUser) {
     if (!_cachedUser.paperStats[paperKey]) _cachedUser.paperStats[paperKey] = { done: 0, correct: 0 };
