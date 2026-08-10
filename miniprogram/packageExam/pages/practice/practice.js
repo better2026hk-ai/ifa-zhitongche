@@ -114,15 +114,29 @@ Page({
     this.updateView();
   },
 
+  // "重新开始"是"当这次练习没发生过"，本章目前显示成什么状态都清空
+  // （包括进页面时按错题本提前标好的"这题目前是错的"标记）——那些题
+  // 客观上确实还是错的，但重新开始这个动作本身就是想要一个干净的空白
+  // 界面重新做一遍，不是去改错题本/统计数据（那些本来就不会因为"重新
+  // 开始"而被清掉，答对了自然会从错题本消失，跟平时一样）。
   resumeRestart() {
-    this.setData({ resumePromptVisible: false });
+    this.resetChapterAnswers();
+    this.setData({ resumePromptVisible: false, qIndex: 0 });
+    this.updateView();
     store.saveProgress(this.data.paperKey, 0, 0).catch(() => {});
   },
 
   // 当前章节每道题的作答情况，只在内存里存，不进 data——参考
-  // wrongbook.js 里 this.selectedSet 的做法。切章节/重新练习本章会重置。
-  seedChapterAnswers(chapterIdx) {
+  // wrongbook.js 里 this.selectedSet 的做法。
+  resetChapterAnswers() {
     this.chapterAnswers = {};
+  },
+
+  // 进入一个"这次会话还没主动重新开始过"的章节时用这个——按错题本提前
+  // 标好哪些题目前是错的，方便导航面板/重新打开这道题时准确显示状态，
+  // 不用非得在本次会话里重新答一遍才知道。
+  seedChapterAnswers(chapterIdx) {
+    this.resetChapterAnswers();
     const ch = this.data.chapters[chapterIdx];
     ch.items.forEach((q, i) => {
       const w = this._wrongByStem.get(q.stem);
@@ -203,8 +217,11 @@ Page({
     this.goToQuestion(Number(e.currentTarget.dataset.index));
   },
 
+  // "重新练习本章"跟"重新开始"一样，是想要一张空白卷子重新做——不用
+  // seedChapterAnswers 重新按错题本标错，不然点了"重新练习"这道题还是
+  // 显示成已经答过/答错的颜色，看起来跟没点一样。
   restartChapter() {
-    this.seedChapterAnswers(this.data.chapterIdx);
+    this.resetChapterAnswers();
     this.setData({ qIndex: 0, screen: 'question' });
     this.updateView();
     store.saveProgress(this.data.paperKey, this.data.chapterIdx, 0).catch(() => {});
