@@ -51,6 +51,14 @@ Page({
       this.setData({ loggedIn: false });
       return;
     }
+    // 本机登录开关（同步，不摸网络）已经是 true，先假定这次能显示真实
+    // 内容，不要让页面先渲染成"还没有登录"再等下面这个网络请求把它翻回
+    // 来——小程序被切到后台一段时间后经常会被系统回收，下次点进"我的"
+    // 基本等于冷启动，`await fetchUserDoc()` 期间如果画面一直停在初始值
+    // `loggedIn:false`，看起来就像每次都要重新登录一样，得等一下才会
+    // 自动切换成真实资料。真的查到 token 失效/没有资料时下面还是会切回
+    // 游客界面，这里只是不让它在确认之前先误显示。
+    if (!this.data.loggedIn) this.setData({ loggedIn: true });
     const user = await store.fetchUserDoc();
     if (!user || !user.nickname) {
       this.setData({ loggedIn: false });
