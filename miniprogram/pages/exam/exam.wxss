@@ -1,2 +1,20 @@
 @import "../../styles/list.wxss";
 @import "../../styles/confirm.wxss";
+
+/* 横幅图下面这两个徽标是真实统计出来的题库数/总题数——原来画在设计稿
+   banner 图里的数字是死的（4门/3,092题），跟实际题库对不上，改成动态的。 */
+.banner-stats {
+  display: flex;
+  gap: 16rpx;
+  margin: -16rpx 0 32rpx;
+}
+
+.banner-stat {
+  padding: 14rpx 28rpx;
+  border-radius: 24rpx;
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  font-weight: 700;
+  font-size: 25rpx;
+  color: var(--green);
+}

@@ -5,6 +5,10 @@ const { getStatusBarHeight } = require('../../utils/util.js');
 Page({
   data: {
     papers: HOME_BANKS.map((b) => Object.assign({ key: b.key, tag: b.tag, title: b.title }, EXAM_CONFIG[b.key])),
+    // 题库数/总题数曾经是设计稿banner图里画死的数字（4门/3,092题），跟实际
+    // 题库（5门、合计题数）不一致——改成横幅下面这两个真实统计出来的徽标。
+    paperCount: HOME_BANKS.length,
+    totalQuestions: HOME_BANKS.reduce((sum, b) => sum + b.total, 0),
     loginPromptVisible: false,
     statusBarHeight: 24
   },
