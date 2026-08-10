@@ -17,6 +17,11 @@
   height: 76rpx;
 }
 
+.star-btn image {
+  width: 100%;
+  height: 100%;
+}
+
 .star-btn:active {
   transform: scale(0.9);
 }
