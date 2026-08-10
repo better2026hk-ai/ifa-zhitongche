@@ -125,6 +125,16 @@ async function saveProfile({ nickname, avatarUrl }) {
   return user;
 }
 
+// 章节练习模式"上次做到哪"——保存的时候顺手同步一下内存缓存，下次同一次
+// App 运行期间再读 fetchUserDoc() 不用等新的网络请求就能拿到最新进度。
+async function saveProgress(paperKey, chapterIdx, qIndex) {
+  await callApi('saveProgress', { paperKey, chapterIdx, qIndex });
+  if (_cachedUser) {
+    if (!_cachedUser.practiceProgress) _cachedUser.practiceProgress = {};
+    _cachedUser.practiceProgress[paperKey] = { chapterIdx, qIndex };
+  }
+}
+
 async function getOrCreateAccountId() {
   const user = await fetchUserDoc();
   return user ? user.accountId : null;
@@ -317,6 +327,7 @@ module.exports = {
   logout,
   login,
   fetchUserDoc,
+  saveProgress,
   hasProfile,
   saveProfile,
   getOrCreateAccountId,

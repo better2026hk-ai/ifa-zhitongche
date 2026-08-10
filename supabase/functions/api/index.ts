@@ -205,6 +205,17 @@ Deno.serve(async (req) => {
         return ok(data);
       }
 
+      case "saveProgress": {
+        // 章节练习模式"上次做到哪"——读一次现有的 practiceProgress，
+        // 只合并这门科目那一条，别的科目的记录不受影响。
+        const user = await getUserRow(openid);
+        const practiceProgress = (user && user.practiceProgress) || {};
+        practiceProgress[body.paperKey] = { chapterIdx: body.chapterIdx, qIndex: body.qIndex };
+        const { error } = await db.from("users").update({ practiceProgress }).eq("openid", openid);
+        if (error) throw error;
+        return ok({});
+      }
+
       case "fetchPracticeQuestions": {
         // 章节练习模式要按章节浏览整份题库，一次性把这份卷子全量返回，
         // 按 idx 排好序（章节内"N. "编号就是靠这个顺序对上的）。
